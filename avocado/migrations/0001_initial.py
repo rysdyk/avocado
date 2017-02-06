@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+from django.db import migrations, models
 import datetime
 import avocado.query.oldparsers.datacontext
 import jsonfield.fields
@@ -12,9 +12,9 @@ import avocado.query.oldparsers.dataview
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sites', '0001_initial'),
+        ('contenttypes', '0002_remove_content_type_name'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('contenttypes', '0001_initial'),
+        ('sites', '0001_initial'),
     ]
 
     operations = [
@@ -36,7 +36,6 @@ class Migration(migrations.Migration):
                 'ordering': ('parent__order', 'parent__name', 'order', 'name'),
                 'verbose_name_plural': 'data categories',
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='DataConcept',
@@ -63,7 +62,6 @@ class Migration(migrations.Migration):
                 'ordering': ('category__order', 'category__name', 'order', 'name'),
                 'permissions': (('view_dataconcept', 'Can view dataconcept'),),
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='DataConceptField',
@@ -79,7 +77,6 @@ class Migration(migrations.Migration):
             options={
                 'ordering': ('order', 'name'),
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='DataContext',
@@ -95,14 +92,13 @@ class Migration(migrations.Migration):
                 ('template', models.BooleanField(default=False)),
                 ('default', models.BooleanField(default=False)),
                 ('session_key', models.CharField(max_length=40, null=True, blank=True)),
-                ('accessed', models.DateTimeField(default=datetime.datetime(2015, 3, 10, 12, 40, 54, 775124), editable=False)),
+                ('accessed', models.DateTimeField(default=datetime.datetime(2017, 1, 11, 22, 1, 1, 250639), editable=False)),
                 ('parent', models.ForeignKey(related_name='forks', blank=True, to='avocado.DataContext', null=True)),
                 ('user', models.ForeignKey(related_name='datacontext+', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'abstract': False,
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='DataField',
@@ -132,13 +128,12 @@ class Migration(migrations.Migration):
                 ('data_version', models.IntegerField(default=1, help_text=b'The current version of the underlying data for this field as of the last modification/update.')),
                 ('order', models.FloatField(null=True, db_column=b'_order', blank=True)),
                 ('category', models.ForeignKey(blank=True, to='avocado.DataCategory', null=True)),
-                ('sites', models.ManyToManyField(related_name='fields+', to='sites.Site', blank=True)),
+                ('sites', models.ManyToManyField(related_name='_datafield_sites_+', to='sites.Site', blank=True)),
             ],
             options={
                 'ordering': ('category__order', 'category__name', 'order', 'name'),
                 'permissions': (('view_datafield', 'Can view datafield'),),
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='DataQuery',
@@ -158,13 +153,12 @@ class Migration(migrations.Migration):
                 ('context_json', jsonfield.fields.JSONField(default=dict, null=True, blank=True, validators=[avocado.query.oldparsers.datacontext.validate])),
                 ('view_json', jsonfield.fields.JSONField(default=dict, null=True, blank=True, validators=[avocado.query.oldparsers.dataview.validate])),
                 ('parent', models.ForeignKey(related_name='forks', blank=True, to='avocado.DataQuery', null=True)),
-                ('shared_users', models.ManyToManyField(related_name='shareddataquery+', to=settings.AUTH_USER_MODEL)),
+                ('shared_users', models.ManyToManyField(related_name='_dataquery_shared_users_+', to=settings.AUTH_USER_MODEL)),
                 ('user', models.ForeignKey(related_name='dataquery+', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'verbose_name_plural': 'data queries',
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='DataView',
@@ -180,14 +174,13 @@ class Migration(migrations.Migration):
                 ('template', models.BooleanField(default=False)),
                 ('default', models.BooleanField(default=False)),
                 ('session_key', models.CharField(max_length=40, null=True, blank=True)),
-                ('accessed', models.DateTimeField(default=datetime.datetime(2015, 3, 10, 12, 40, 54, 776427), editable=False)),
+                ('accessed', models.DateTimeField(default=datetime.datetime(2017, 1, 11, 22, 1, 1, 252000), editable=False)),
                 ('parent', models.ForeignKey(related_name='forks', blank=True, to='avocado.DataView', null=True)),
                 ('user', models.ForeignKey(related_name='dataview+', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'abstract': False,
             },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Log',
@@ -201,9 +194,6 @@ class Migration(migrations.Migration):
                 ('content_type', models.ForeignKey(blank=True, to='contenttypes.ContentType', null=True)),
                 ('user', models.ForeignKey(related_name='+', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
-            options={
-            },
-            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Revision',
@@ -216,34 +206,30 @@ class Migration(migrations.Migration):
                 ('deleted', models.BooleanField(default=False)),
                 ('changes', jsonfield.fields.JSONField(null=True, blank=True)),
                 ('content_type', models.ForeignKey(to='contenttypes.ContentType')),
-                ('user', models.ForeignKey(related_name='+revision', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('user', models.ForeignKey(related_name='revision', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'ordering': ('-timestamp',),
                 'get_latest_by': 'timestamp',
             },
-            bases=(models.Model,),
-        ),
-        migrations.AlterUniqueTogether(
-            name='datafield',
-            unique_together=set([('app_name', 'model_name', 'field_name')]),
         ),
         migrations.AddField(
             model_name='dataconceptfield',
             name='field',
             field=models.ForeignKey(related_name='concept_fields', to='avocado.DataField'),
-            preserve_default=True,
         ),
         migrations.AddField(
             model_name='dataconcept',
             name='fields',
             field=models.ManyToManyField(related_name='concepts', through='avocado.DataConceptField', to='avocado.DataField'),
-            preserve_default=True,
         ),
         migrations.AddField(
             model_name='dataconcept',
             name='sites',
-            field=models.ManyToManyField(related_name='concepts+', to='sites.Site', blank=True),
-            preserve_default=True,
+            field=models.ManyToManyField(related_name='_dataconcept_sites_+', to='sites.Site', blank=True),
+        ),
+        migrations.AlterUniqueTogether(
+            name='datafield',
+            unique_together=set([('app_name', 'model_name', 'field_name')]),
         ),
     ]
