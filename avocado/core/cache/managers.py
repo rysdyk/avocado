@@ -3,5 +3,5 @@ from .query import CacheQuerySet
 
 
 class CacheManager(models.Manager):
-    def get_query_set(self):
+    def get_queryset(self):
         return CacheQuerySet(self.model)

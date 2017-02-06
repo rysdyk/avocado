@@ -81,13 +81,13 @@ class CacheProxyTestCase(TestCase):
 class CacheManagerTestCase(TestCase):
     @override_settings(AVOCADO_DATA_CACHE_ENABLED=True)
     def test(self):
-        self.assertEqual(Foo.objects.get_query_set().count(), 0)
+        self.assertEqual(Foo.objects.get_queryset().count(), 0)
 
         for i in range(10):
             f = Foo()
             f.save()
 
-        self.assertEqual(Foo.objects.get_query_set().count(), 10)
+        self.assertEqual(Foo.objects.get_queryset().count(), 10)
 
 
 class CachedMethodTestCase(TestCase):

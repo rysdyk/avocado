@@ -25,7 +25,7 @@ class CacheQuerySet(QuerySet):
                 break
 
         if pk is not None:
-            key = cache_key_func([opts.app_label, opts.module_name, pk])
+            key = cache_key_func([opts.app_label, opts.model_name, pk])
             cache = get_cache(settings.DATA_CACHE)
             obj = cache.get(key)
 
