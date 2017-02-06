@@ -217,11 +217,11 @@ class DataFieldManager(PublishedManager, DataFieldSearchMixin):
         super(DataFieldManager, self).contribute_to_class(model, name)
         setattr(model, name, DataFieldManagerDescriptor(self))
 
-    def get_query_set(self):
+    def get_queryset(self):
         return DataFieldQuerySet(self.model, using=self._db)
 
     def get_by_natural_key(self, app_name, model_name=None, field_name=None):
-        queryset = self.get_query_set()
+        queryset = self.get_queryset()
         if type(app_name) is int:
             return queryset.get(id=app_name)
 
@@ -246,7 +246,7 @@ class DataFieldManager(PublishedManager, DataFieldSearchMixin):
 
 class DataConceptManager(PublishedManager, DataConceptSearchMixin):
     "Manager for the `DataConcept` model."
-    def get_query_set(self):
+    def get_queryset(self):
         return DataConceptQuerySet(self.model, using=self._db)
 
     @transaction.atomic
@@ -276,7 +276,7 @@ class DataCategoryManager(PublishedManager):
 class DataClassBaseManager(models.Manager):
     def get_default_template(self):
         try:
-            return self.get_query_set().get(default=True, template=True)
+            return self.get_queryset().get(default=True, template=True)
         except self.model.DoesNotExist:
             pass
 

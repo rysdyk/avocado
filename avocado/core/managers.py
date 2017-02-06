@@ -6,7 +6,7 @@ from .cache import CacheQuerySet
 class PassThroughManager(models.Manager):
     """Inherit from this Manager to enable you to call any methods from your
     custom QuerySet class from your manager. Simply define your QuerySet
-    class, and return an instance of it from your manager's `get_query_set`
+    class, and return an instance of it from your manager's `get_queryset`
     method.
 
     Alternately, if you don't need any extra methods on your manager that
@@ -31,15 +31,15 @@ class PassThroughManager(models.Manager):
     def __getattr__(self, name):
         if name in self._deny_methods:
             raise AttributeError(name)
-        return getattr(self.get_query_set(), name)
+        return getattr(self.get_queryset(), name)
 
-    def get_query_set(self):
+    def get_queryset(self):
         if self._queryset_cls is not None:
             kwargs = {'model': self.model}
             if hasattr(self, '_db'):
                 kwargs['using'] = self._db
             return self._queryset_cls(**kwargs)
-        return super(PassThroughManager, self).get_query_set()
+        return super(PassThroughManager, self).get_queryset()
 
 
 class PublishedQuerySet(CacheQuerySet):
@@ -50,5 +50,5 @@ class PublishedQuerySet(CacheQuerySet):
 
 
 class PublishedManager(PassThroughManager):
-    def get_query_set(self):
+    def get_queryset(self):
         return PublishedQuerySet(self.model, using=self._db)
