@@ -85,6 +85,7 @@ class DataFieldAdminForm(forms.ModelForm):
 
     class Meta(object):
         model = DataField
+        exclude = []
 
 
 class DataFieldAdmin(PublishedAdmin):
@@ -172,7 +173,7 @@ class DataFieldAdmin(PublishedAdmin):
             DataConcept.objects.create_from_field(datafield)
     create_dataconcept_multi.short_description = 'Create Data Concept for Each'
 
-    @transaction.commit_on_success
+    @transaction.atomic
     def create_dataconcept_single(self, request, queryset):
         fields = list(queryset)
 
