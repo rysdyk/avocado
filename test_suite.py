@@ -1,14 +1,9 @@
 import os
 import sys
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
-
 import django
-if hasattr(django, 'setup'):
-    django.setup()
-
 from django.core import management
 
+os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
 
 apps = []
 
@@ -45,5 +40,8 @@ if not apps:
         'tests.cases.subcommands.tests',
         'tests.cases.validation.tests'
     ]
+
+if hasattr(django, 'setup'):
+    django.setup()
 
 management.call_command('test', *apps)
