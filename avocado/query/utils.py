@@ -2,7 +2,8 @@ import logging
 
 import django
 from django.core.cache import get_cache
-from django.db import connections, DEFAULT_DB_ALIAS, DatabaseError, OperationalError
+from django.db import (connections, DEFAULT_DB_ALIAS, DatabaseError,
+                       OperationalError)
 from django_rq import get_queue
 
 from avocado.conf import settings

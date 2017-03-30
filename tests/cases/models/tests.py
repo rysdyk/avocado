@@ -625,7 +625,7 @@ class DataQueryTestCase(TestCase):
 
         self.assertEqual(
             unicode(query.apply(tree=Employee).query)
-            .replace(' ', '').replace('`','"'),
+            .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id", '
             '"tests_office"."location" FROM '
             '"tests_employee" INNER JOIN "tests_title" ON '
@@ -638,7 +638,7 @@ class DataQueryTestCase(TestCase):
         queryset = Employee.objects.all().distinct()
         self.assertEqual(
             unicode(query.apply(queryset=queryset).query)
-            .replace(' ', '').replace('`','"'),
+            .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id", '
             '"tests_office"."location" FROM '
             '"tests_employee" INNER JOIN "tests_office" ON '

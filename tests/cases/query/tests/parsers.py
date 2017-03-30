@@ -212,7 +212,7 @@ class DataContextParserTestCase(TestCase):
 
         self.assertEqual(
             unicode(node.apply().values('id').query)
-            .replace(' ', '').replace('`','"'),
+            .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id" FROM "tests_employee" '
             'INNER JOIN "tests_title" ON ("tests_employee"."title_id" = '
             '"tests_title"."id") WHERE "tests_title"."boss" = True '
@@ -241,7 +241,7 @@ class DataContextParserTestCase(TestCase):
 
         self.assertEqual(
             unicode(node.apply().values('id').query)
-            .replace(' ', '').replace('`','"'),
+            .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id" FROM "tests_employee" '
             'INNER JOIN "tests_title" ON ("tests_employee"."title_id" = '
             '"tests_title"."id") WHERE ("tests_employee"."first_name" = John '
@@ -338,7 +338,7 @@ class DataViewParserTestCase(TestCase):
 
         self.assertEqual(
             unicode(node.apply().query)
-            .replace(' ', '').replace('`','"'),
+            .replace(' ', '').replace('`', '"'),
             'SELECT "tests_employee"."id", "tests_employee"."first_name", '
             '"tests_employee"."last_name" FROM "tests_employee"'
             .replace(' ', ''))
@@ -351,7 +351,7 @@ class DataViewParserTestCase(TestCase):
 
         self.assertEqual(
             unicode(node.apply().query)
-            .replace(' ', '').replace('`','"'),
+            .replace(' ', '').replace('`', '"'),
             'SELECT "tests_employee"."id" FROM "tests_employee" '
             'ORDER BY "tests_employee"."first_name" DESC, '
             '"tests_employee"."last_name" DESC'
@@ -364,7 +364,7 @@ class DataViewParserTestCase(TestCase):
 
         self.assertEqual(
             unicode(node.apply(Employee.objects.distinct()).query)
-            .replace(' ', '').replace('`','"'),
+            .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id", '
             '"tests_employee"."first_name", '
             '"tests_employee"."last_name" FROM "tests_employee"'
@@ -394,7 +394,7 @@ class DataViewParserTestCase(TestCase):
 
         self.assertEqual(
             unicode(node.apply(Employee.objects.distinct()).query)
-            .replace(' ', '').replace('`','"'),
+            .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id", '
             '"tests_office"."location", "tests_title"."name" FROM '
             '"tests_employee" INNER JOIN "tests_office" ON '
@@ -530,7 +530,7 @@ class DataQueryParserTestCase(TestCase):
 
         self.assertEqual(
             unicode(node.apply().query)
-            .replace(' ', '').replace('`','"'),
+            .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id", '
             '"tests_employee"."first_name", "tests_employee"."last_name" FROM '
             '"tests_employee" INNER JOIN "tests_title" ON '
@@ -548,7 +548,7 @@ class DataQueryParserTestCase(TestCase):
 
         self.assertEqual(
             unicode(node.apply().query)
-            .replace(' ', '').replace('`','"'),
+            .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id", '
             '"tests_employee"."first_name", '
             '"tests_employee"."last_name" FROM "tests_employee" '
@@ -566,7 +566,7 @@ class DataQueryParserTestCase(TestCase):
 
         self.assertEqual(
             unicode(node.apply().values('id').query)
-            .replace(' ', '').replace('`','"'),
+            .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id" FROM "tests_employee" '
             'INNER JOIN "tests_title" ON ("tests_employee"."title_id" = '
             '"tests_title"."id") WHERE "tests_title"."boss" = True '
