@@ -2,7 +2,7 @@ import logging
 
 import django
 from django.core.cache import get_cache
-from django.db import connections, DEFAULT_DB_ALIAS, DatabaseError
+from django.db import connections, DEFAULT_DB_ALIAS, DatabaseError, OperationalError
 from django_rq import get_queue
 
 from avocado.conf import settings
@@ -175,7 +175,13 @@ def _cancel_query(name, db, pid):
 
         # Kills the query, but not the connection. Owners of the thread
         # are allowed to kill their own queries.
-        c.execute('KILL QUERY %s', (pid,))
+        try:
+            c.execute('KILL QUERY %s', (pid,))
+        except OperationalError as oe:
+            # Ignore 1094, "Unknown thread id", as it must have
+            # finished already
+            if oe.args[0] != 1094:
+                raise oe
 
         # TODO; any way to confirm it was actually killed?
         # > SELECT 1 FROM information_schema.processlist WHERE id = %s
