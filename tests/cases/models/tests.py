@@ -624,7 +624,8 @@ class DataQueryTestCase(TestCase):
         query = DataQuery(attrs)
 
         self.assertEqual(
-            unicode(query.apply(tree=Employee).query).replace(' ', ''),
+            unicode(query.apply(tree=Employee).query)
+            .replace(' ', '').replace('`','"'),
             'SELECT DISTINCT "tests_employee"."id", '
             '"tests_office"."location" FROM '
             '"tests_employee" INNER JOIN "tests_title" ON '
@@ -636,7 +637,8 @@ class DataQueryTestCase(TestCase):
         query = DataQuery({'view': {'ordering': [(c.pk, 'desc')]}})
         queryset = Employee.objects.all().distinct()
         self.assertEqual(
-            unicode(query.apply(queryset=queryset).query).replace(' ', ''),
+            unicode(query.apply(queryset=queryset).query)
+            .replace(' ', '').replace('`','"'),
             'SELECT DISTINCT "tests_employee"."id", '
             '"tests_office"."location" FROM '
             '"tests_employee" INNER JOIN "tests_office" ON '
