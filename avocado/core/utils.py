@@ -79,7 +79,7 @@ def get_heuristic_flags(field):
 
 def parse_field_key(key):
     "Returns a field lookup based on a variety of key types."
-    if isinstance(key, int):
+    if isinstance(key, int) or isinstance(key, long):
         return {'pk': key}
 
     keys = ('app_name', 'model_name', 'field_name')
