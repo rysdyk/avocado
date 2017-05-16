@@ -2,7 +2,6 @@ import os
 import sys
 import django
 from django.core import management
-from django.conf import settings
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
 
@@ -49,12 +48,4 @@ if not apps:
 if hasattr(django, 'setup'):
     django.setup()
 
-# if len(databases) == 0:
-    # databases.append('sqlite')
-
-# for database in databases:
-    # print databases
-    # settings.DATABASES['default'] = settings.DATABASES[database]
-    # print("Running tests on DB {db}".format(db=database))
 management.call_command('test', *apps)
-    # print("Done running tests")
