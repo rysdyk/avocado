@@ -34,7 +34,9 @@ before_script:
     - mysql -u root -e 'CREATE DATABASE IF NOT EXISTS avocado;'
 
 script:
-    - coverage run test_suite.py --sqlite --mysql --postgres
+    - coverage run test_suite.py --sqlite --no-mysql --no-postgres
+    - coverage run test_suite.py --no-sqlite --mysql --no-postgres
+    - coverage run test_suite.py --no-sqlite --no-mysql --postgres
 
 after_success:
     - pip install -q coveralls

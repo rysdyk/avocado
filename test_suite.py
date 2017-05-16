@@ -49,9 +49,12 @@ if not apps:
 if hasattr(django, 'setup'):
     django.setup()
 
-if len(databases) == 0:
-    databases.append('sqlite')
+# if len(databases) == 0:
+    # databases.append('sqlite')
 
-for database in databases:
-    settings.DATABASES['default'] = database
-    management.call_command('test', *apps)
+# for database in databases:
+    # print databases
+    # settings.DATABASES['default'] = settings.DATABASES[database]
+    # print("Running tests on DB {db}".format(db=database))
+management.call_command('test', *apps)
+    # print("Done running tests")
