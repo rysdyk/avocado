@@ -9,9 +9,9 @@ env:
     # - DJANGO=1.5.12 POSTGRES_TEST_USER=postgres POSTGRES_TEST_NAME=avocado MYSQL_TEST_USER=root MYSQL_TEST_NAME=avocado
     # - DJANGO=1.6.10 POSTGRES_TEST_USER=postgres POSTGRES_TEST_NAME=avocado MYSQL_TEST_USER=root MYSQL_TEST_NAME=avocado
     # - DJANGO=1.7.6 POSTGRES_TEST_USER=postgres POSTGRES_TEST_NAME=avocado MYSQL_TEST_USER=root MYSQL_TEST_NAME=avocado
-    - DJANGO=1.8.17 POSTGRES_TEST_USER=postgres POSTGRES_TEST_NAME=avocado MYSQL_TEST_USER=root MYSQL_TEST_NAME=avocado
-    # - DJANGO=1.9.12 POSTGRES_TEST_USER=postgres POSTGRES_TEST_NAME=avocado MYSQL_TEST_USER=root MYSQL_TEST_NAME=avocado
-    # - DJANGO=1.10.5 POSTGRES_TEST_USER=postgres POSTGRES_TEST_NAME=avocado MYSQL_TEST_USER=root MYSQL_TEST_NAME=avocado
+    - DJANGO=1.8.18 POSTGRES_TEST_USER=postgres POSTGRES_TEST_NAME=avocado MYSQL_TEST_USER=root MYSQL_TEST_NAME=avocado
+    - DJANGO=1.10.7 POSTGRES_TEST_USER=postgres POSTGRES_TEST_NAME=avocado MYSQL_TEST_USER=root MYSQL_TEST_NAME=avocado
+    - DJANGO=1.11.1 POSTGRES_TEST_USER=postgres POSTGRES_TEST_NAME=avocado MYSQL_TEST_USER=root MYSQL_TEST_NAME=avocado
 
 services:
     - memcached
@@ -35,8 +35,8 @@ before_script:
 
 script:
     - coverage run test_suite.py --sqlite --no-mysql --no-postgres
-    - coverage run test_suite.py --no-sqlite --mysql --no-postgres
-    - coverage run test_suite.py --no-sqlite --no-mysql --postgres
+    # - coverage run test_suite.py --no-sqlite --mysql --no-postgres
+    # - coverage run test_suite.py --no-sqlite --no-mysql --postgres
 
 after_success:
     - pip install -q coveralls
