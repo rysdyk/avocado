@@ -1,6 +1,6 @@
 Django>=1.5,<1.11
 django-guardian==1.4.6
-django-haystack==2.3.1
+django-haystack==2.6.1
 Whoosh==2.6.0
 jsonfield==1.0.0
 modeltree==2.0.0
