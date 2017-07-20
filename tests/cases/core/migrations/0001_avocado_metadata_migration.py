@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from south.v2 import DataMigration
+from __future__ import unicode_literals
+from django.db import migrations, models
 
-class Migration(DataMigration):
+class Migration(migrations.Migration):
 
     def forwards(self, orm):
         "Perform a 'safe' load using Avocado's backup utilities."
@@ -12,3 +13,7 @@ class Migration(DataMigration):
     def backwards(self, orm):
         "No backwards migration applicable."
         pass
+
+    operations = [
+        migrations.RunPython(forwards, backwards)
+    ]
