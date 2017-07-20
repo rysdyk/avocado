@@ -1,5 +1,5 @@
+from importlib import import_module
 from django.db.models.query import EmptyQuerySet
-from django.utils.importlib import import_module
 from modeltree.tree import trees
 from avocado.formatters import RawFormatter
 from avocado.conf import settings

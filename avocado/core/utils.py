@@ -1,9 +1,9 @@
 from random import choice
+from importlib import import_module
 from string import ascii_lowercase, digits
 from django import forms
 from django.contrib.auth.models import User
 from django.db import models
-from django.utils.importlib import import_module
 from avocado.conf import settings
 
 
