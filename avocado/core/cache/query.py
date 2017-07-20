@@ -1,4 +1,4 @@
-from django.core.cache import get_cache
+from django.core.cache import caches
 from django.db.models.query import QuerySet
 from avocado.conf import settings
 from .model import cache_key_func
@@ -26,7 +26,7 @@ class CacheQuerySet(QuerySet):
 
         if pk is not None:
             key = cache_key_func([opts.app_label, opts.model_name, pk])
-            cache = get_cache(settings.DATA_CACHE)
+            cache = caches[settings.DATA_CACHE]
             obj = cache.get(key)
 
             if obj is not None:
