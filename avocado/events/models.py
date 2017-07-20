@@ -1,7 +1,7 @@
 import jsonfield
 from datetime import datetime
 from django.db import models
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 
@@ -10,7 +10,7 @@ class Log(models.Model):
     # Reference to an object if one is applicable
     content_type = models.ForeignKey(ContentType, null=True, blank=True)
     object_id = models.PositiveIntegerField(null=True, blank=True)
-    content_object = generic.GenericForeignKey()
+    content_object = GenericForeignKey()
 
     # The event name. This must be unique for the event type to ensure
     # data can be aggregated for analysis

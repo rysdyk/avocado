@@ -2,7 +2,7 @@ import jsonfield
 from copy import deepcopy
 from datetime import datetime
 from django.db import models
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from .managers import RevisionManager
@@ -13,7 +13,7 @@ class Revision(models.Model):
     # Generic foreign key to the object
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField(db_index=True)
-    content_object = generic.GenericForeignKey()
+    content_object = GenericForeignKey()
 
     # The serialized data for this revision
     data = jsonfield.JSONField(null=True, blank=True)
