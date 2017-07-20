@@ -1,7 +1,7 @@
 import logging
 
 import django
-from django.core.cache import get_cache
+from django.core.cache import caches
 from django.db import (connections, DEFAULT_DB_ALIAS, DatabaseError,
                        OperationalError)
 from django_rq import get_queue
@@ -77,7 +77,7 @@ def named_connection(name, db=DEFAULT_DB_ALIAS):
 
     # Put real database alias and PID in centralized cache so multiple threads
     # and/or processes can access it.
-    cache = get_cache(settings.QUERY_CACHE)
+    cache = caches[settings.QUERY_CACHE]
     cache.set(temp_db, (db, pid))
 
     return conn
@@ -87,7 +87,7 @@ def cancel_query(name):
     "Cancels a query running on a named connection."
     temp_db = TEMP_DB_ALIAS_PREFIX.format(name)
 
-    cache = get_cache(settings.QUERY_CACHE)
+    cache = caches[settings.QUERY_CACHE]
     info = cache.get(temp_db)
     canceled = None
 
@@ -108,7 +108,7 @@ def close_connection(name):
     temp_db = TEMP_DB_ALIAS_PREFIX.format(name)
 
     # Remove the cache entry.
-    cache = get_cache(settings.QUERY_CACHE)
+    cache = caches[settings.QUERY_CACHE]
     cache.delete(temp_db)
 
     # Remove connection from handler if in the same thread.
@@ -145,7 +145,7 @@ def _get_backend_pid(conn):
 
 def _conn_info(name):
     temp_db = TEMP_DB_ALIAS_PREFIX.format(name)
-    cache = get_cache(settings.QUERY_CACHE)
+    cache = caches[settings.QUERY_CACHE]
     return cache.get(temp_db)
 
 

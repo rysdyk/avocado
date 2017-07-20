@@ -1,5 +1,5 @@
 import logging
-from django.core.cache import get_cache
+from django.core.cache import caches
 from avocado.conf import settings
 
 logger = logging.getLogger(__name__)
@@ -19,7 +19,7 @@ class CacheProxy(object):
 
     def _set(self, key, data):
         logger.debug('Compute property cache "{0}"'.format(key))
-        cache = get_cache(settings.DATA_CACHE)
+        cache = caches[settings.DATA_CACHE]
 
         if data is not None:
             cache.set(key, data, timeout=self.timeout)
@@ -27,7 +27,7 @@ class CacheProxy(object):
 
     def get(self, instance, args=None, kwargs=None):
         key = self.cache_key(instance, args, kwargs)
-        cache = get_cache(settings.DATA_CACHE)
+        cache = caches[settings.DATA_CACHE]
         data = cache.get(key)
         logger.debug('Get property cache "{0}"'.format(key))
         return data
@@ -36,7 +36,7 @@ class CacheProxy(object):
         # Reference to prevent the key from being changed mid-execution
         key = self.cache_key(instance, args, kwargs)
 
-        cache = get_cache(settings.DATA_CACHE)
+        cache = caches[settings.DATA_CACHE]
         data = cache.get(key)
 
         if data is None:
@@ -54,11 +54,11 @@ class CacheProxy(object):
     def flush(self, instance, args=None, kwargs=None):
         "Flushes cached data for this method."
         key = self.cache_key(instance, args, kwargs)
-        cache = get_cache(settings.DATA_CACHE)
+        cache = caches[settings.DATA_CACHE]
         cache.delete(key)
         logger.debug('Delete property cache "{0}"'.format(key))
 
     def cached(self, instance, args=None, kwargs=None):
         "Checks if the data is in the cache."
-        cache = get_cache(settings.DATA_CACHE)
+        cache = caches[settings.DATA_CACHE]
         return self.cache_key(instance, args, kwargs) in cache
