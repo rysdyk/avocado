@@ -1,7 +1,8 @@
 import os
 import sys
 from optparse import make_option
-from django.db.models import get_model, get_models, get_app, AutoField, \
+from django.apps import apps
+from django.db.models import AutoField, \
     ForeignKey, OneToOneField, ManyToManyField, FieldDoesNotExist
 from django.core.management.base import BaseCommand
 from avocado.models import DataField, DataConcept, DataCategory
@@ -18,38 +19,37 @@ Any `DataField` already loaded will not be altered in any way.
 class Command(BaseCommand):
     __doc__ = help = _help
 
-    option_list = BaseCommand.option_list + (
-        make_option('--no-publish', action='store_false', dest='publish',
+    def add_arguments(self, parser):
+        parser.add_argument('--no-publish', action='store_false', dest='publish',
                     default=True, help='Prevent publishing fields or '
                     'concepts.'),
 
-        make_option('--no-concepts', action='store_false', dest='concepts',
+        parser.add_argument('--no-concepts', action='store_false', dest='concepts',
                     default=True, help='Prevent creating concepts.'),
 
-        make_option('-e', '--include-non-editable', action='store_true',
+        parser.add_argument('-e', '--include-non-editable', action='store_true',
                     dest='include_non_editable', default=False, help='Create '
                     'fields for non-editable fields'),
 
-        make_option('-k', '--include-keys', action='store_true',
+        parser.add_argument('-k', '--include-keys', action='store_true',
                     dest='include_keys', default=False, help='Create fields '
                     'for primary and foreign key fields'),
 
-        make_option('-f', '--force', action='store_true', dest='force',
+        parser.add_argument('-f', '--force', action='store_true', dest='force',
                     default=False, help='Forces an update on existing field '
                     'metadata'),
 
-        make_option('-q', '--quiet', action='store_true', dest='quiet',
+        parser.add_argument('-q', '--quiet', action='store_true', dest='quiet',
                     default=False, help='Do not print any output'),
 
-        make_option('--prepend-model-name', action='store_true',
+        parser.add_argument('--prepend-model-name', action='store_true',
                     dest='prepend_model_name', default=False, help='Prepend '
                     'the model name to the field name'),
 
-        make_option('--categories', action='store_true',
+        parser.add_argument('--categories', action='store_true',
                     dest='categories', default=False, help='Create/link '
                     'categories for each model and associate contained '
                     'fields and concepts.'),
-    )
 
     # These are ignored since these join fields will be determined at runtime
     # using the modeltree library. fields can be created for any other
@@ -100,7 +100,7 @@ class Command(BaseCommand):
                 app_name = toks[0]
 
             if model_name:
-                model = get_model(app_name, model_name)
+                model = apps.get_model(app_name, model_name)
 
                 if model is None:
                     print(u'Cannot find model "{0}", skipping...'
@@ -121,11 +121,11 @@ class Command(BaseCommand):
                 else:
                     pending_models.append(model)
             else:
-                app = get_app(app_name)
+                app = apps.get_app_config(app_name)
                 if app is None:
                     print(u'Cannot find app "{0}", skipping...'.format(label))
                     continue
-                pending_models.extend(get_models(app))
+                pending_models.extend(app.get_models())
 
             for model in pending_models:
                 model_name = model._meta.object_name.lower()

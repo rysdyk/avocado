@@ -34,19 +34,18 @@ Pass `--flush` to explicitly flush any existing cache for each method.
 class Command(DataFieldCommand):
     help = __doc__
 
-    option_list = BaseCommand.option_list + (
-        make_option('--flush',
+    def add_arguments(self, parser):
+        parser.add_argument('--flush',
                     action='store_true',
                     help='Flushes existing cache for each cached property.',
                     default=False),
 
-        make_option('--methods',
+        parser.add_argument('--methods',
                     action='append',
                     dest='methods',
                     default=CACHED_METHODS,
                     help='Select which methods to pre-cache. Choices: {0}'
                          .format(METHOD_CHOICES)),
-    )
 
     @transaction.atomic
     def _handle_field_method(self, f, method, flush):

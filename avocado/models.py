@@ -2,6 +2,7 @@ import logging
 import random
 import jsonfield
 from datetime import datetime
+from django.apps import apps
 from django.db import models
 from django.db.models import Count
 from django.contrib.sites.models import Site
@@ -210,7 +211,7 @@ class DataField(BasePlural, PublishArchiveMixin):
     def real_model(self):
         "Returns the model class this datafield is associated with."
         if not hasattr(self, '_real_model'):
-            self._real_model = models.get_model(self.app_name, self.model_name)
+            self._real_model = apps.get_model(self.app_name, self.model_name)
         return self._real_model
 
     @property

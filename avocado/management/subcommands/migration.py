@@ -58,17 +58,16 @@ See https://github.com/cbmi/avocado/wiki/Managing-your-metadata.\
 class Command(BaseCommand):
     __doc__ = help = _help
 
-    option_list = BaseCommand.option_list + (
-        make_option('--database', action='store', dest='database',
+    def add_arguments(self, parser):
+        parser.add_argument('--database', action='store', dest='database',
                     default=DEFAULT_DB_ALIAS, help='Nominates a specific '
                     'database to dump fixtures from. Defaults to the '
                     '"default" database.'),
-        make_option('--backup-path', action='store', dest='backup_path',
+        parser.add_argument('--backup-path', action='store', dest='backup_path',
                     help='Define a non-temporary path for the migration '
                     'backup.'),
-        make_option('--no-fake', action='store_true', help='Prevents the new '
+        parser.add_argument('--no-fake', action='store_true', help='Prevents the new '
                     'migration from being immediately faked in the database.')
-    )
 
     def handle(self, migration_suffix=METADATA_MIGRATION_SUFFIX,
                fixture_suffix=METADATA_FIXTURE_SUFFIX, **options):

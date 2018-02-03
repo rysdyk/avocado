@@ -8,15 +8,14 @@ from avocado.history.models import Revision
 class Command(BaseCommand):
     help = 'Utilities for managing the history API'
 
-    option_list = BaseCommand.option_list + (
-        make_option('--cull', action='store_true', help='Culls entries that '
+    def add_arguments(self, parser):
+        parser.add_arguments('--cull', action='store_true', help='Culls entries that '
                     'exceeds the maximum allowed history size for each '
                     'instance.'),
 
-        make_option('--max-size', type=int, help='Specify the max history '
+        parser.add_arguments('--max-size', type=int, help='Specify the max history '
                     'size for commands that require it. Defaults to '
                     'HISTORY_MAX_SIZE.'),
-    )
 
     @transaction.atomic
     def handle(self, *args, **options):

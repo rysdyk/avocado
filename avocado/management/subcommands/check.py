@@ -19,11 +19,10 @@ OUTPUT_CHOICES = ('stdout', 'html', 'none')
 class Command(BaseCommand):
     __doc__ = help = _help
 
-    option_list = BaseCommand.option_list + (
-        make_option('--output', default='stdout', choices=OUTPUT_CHOICES,
+    def add_arguments(self, parser):
+        parser.add_argument('--output', default='stdout', choices=OUTPUT_CHOICES,
                     help='Specify the output type; {0}'
                          .format(', '.join(OUTPUT_CHOICES))),
-    )
 
     def handle(self, *args, **options):
         output = options.get('output')

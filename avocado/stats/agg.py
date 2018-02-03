@@ -13,7 +13,7 @@ class Aggregator(object):
                 raise TypeError('Field instance or field name and model class '
                                 'required')
             field_name = field
-            field = model._meta.get_field_by_name(field_name)[0]
+            field = model._meta.get_field(field_name)
         else:
             model = field.model
             field_name = field.name

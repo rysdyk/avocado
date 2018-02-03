@@ -15,11 +15,10 @@ requested. To pre-cache, use the `avocado cache` command.
 class Command(DataFieldCommand):
     help = __doc__
 
-    option_list = DataFieldCommand.option_list + (
-        make_option('-i', '--incr', action='store_true', dest='incr_version',
+    def add_arguments(self, parser):
+        parser.add_argument('-i', '--incr', action='store_true', dest='incr_version',
                     default=False, help='Increment `data_version` on '
                     '`DataField` instances'),
-    )
 
     def handle_fields(self, fields, **options):
         "Handles app_label or app_label.model_label formats."
