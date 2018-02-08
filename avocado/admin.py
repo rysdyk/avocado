@@ -1,4 +1,5 @@
 from django import forms
+from django.apps import apps
 from django.db import transaction, models
 from django.contrib import admin
 from django.core.urlresolvers import reverse
@@ -56,7 +57,7 @@ class DataFieldAdminForm(forms.ModelForm):
     def clean_app_name(self):
         app_name = self.cleaned_data.get('app_name')
         try:
-            models.get_app(app_name)
+            apps.get_app_config(app_name)
         except ImproperlyConfigured:
             raise forms.ValidationError(u'The app "{0}" could not be found'
                                         .format(app_name))
@@ -242,12 +243,13 @@ class DataConceptAdmin(PublishedAdmin):
         site = self.admin_site
         queryset = obj.fields.only('id', 'name')
         reverse_name = '{0}:avocado_datafield_change'.format(site.name)
+        # TODO sgithens
+        # urlize = lambda x: u'<a href="{0}">{1}</a>'.format(reverse(
+            # reverse_name, args=[x.id]), x.name, namespace=site.name,
+            # app_name=site.app_name)
 
-        urlize = lambda x: u'<a href="{0}">{1}</a>'.format(reverse(
-            reverse_name, args=[x.id]), x.name, namespace=site.name,
-            app_name=site.app_name)
-
-        return '<br>'.join(map(urlize, queryset)) or None
+        # return '<br>'.join(map(urlize, queryset)) or None
+        return ''
 
     related_datafields.short_description = 'Related Data Fields'
     related_datafields.allow_tags = True

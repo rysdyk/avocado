@@ -1,6 +1,16 @@
 from django.db import models
 from avocado.core.cache import cached_method, CacheManager
 
+class ComplexNumber(models.Model):
+    def __init__(self):
+        self.pk = 100
+
+    def get_version(self, label=None):
+        return 1
+
+    def as_string(self, *args, **kwargs):
+        return '2+3i'
+
 
 class Foo(models.Model):
     objects = CacheManager()

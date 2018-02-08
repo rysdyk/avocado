@@ -3,6 +3,7 @@ import os
 import sys
 import tempfile
 import logging
+from django.apps import apps
 from django.core import serializers, management
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models, transaction, router, DEFAULT_DB_ALIAS, \
@@ -22,7 +23,7 @@ log = logging.getLogger(__name__)
 def _check_app():
     from avocado.conf import settings
     app_name = settings.METADATA_MIGRATION_APP
-    if not app_name or not models.get_app(app_name.split('.')[-1]):
+    if not app_name or not apps.get_app_config(app_name.split('.')[-1]):
         raise ImproperlyConfigured('{0} is not a valid app name. The '
                                    'backup/migration API requires '
                                    'METADATA_MIGRATION_APP to be a valid '
@@ -60,14 +61,8 @@ def get_fixture_dir():
     fixture_dir = settings.METADATA_FIXTURE_DIR
     if fixture_dir:
         return fixture_dir
-    app = models.get_app(settings.METADATA_MIGRATION_APP.split('.')[-1])
-    if hasattr(app, '__path__'):
-        # It's a 'models/' subpackage
-        app_dir = os.path.dirname(os.path.dirname(app.__file__))
-    else:
-        # It's a models.py module
-        app_dir = os.path.dirname(app.__file__)
-    return os.path.join(app_dir, 'fixtures')
+    app = apps.get_app_config(settings.METADATA_MIGRATION_APP.split('.')[-1])
+    return os.path.join(app.path, 'fixtures')
 
 
 def create_fixture(name, using=DEFAULT_DB_ALIAS, silent=False):

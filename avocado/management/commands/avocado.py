@@ -77,11 +77,12 @@ class Command(BaseCommand):
         # call_command can be called programatically, we need to simulate the
         # loading and handling of defaults (see #10080 for details).
         defaults = {}
-        for opt in klass.option_list:
-            if opt.default is NO_DEFAULT:
-                defaults[opt.dest] = None
-            else:
-                defaults[opt.dest] = opt.default
-        defaults.update(options)
+        # TODO sgithens
+        # for opt in klass.option_list:
+            # if opt.default is NO_DEFAULT:
+                # defaults[opt.dest] = None
+            # else:
+                # defaults[opt.dest] = opt.default
+        # defaults.update(options)
 
-        return klass.execute(*args, **defaults)
+        return klass.execute(*args, **options)

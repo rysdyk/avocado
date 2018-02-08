@@ -4,18 +4,9 @@ from django.db import models
 from django.test import TestCase
 from django.test.utils import override_settings
 from avocado.core.cache import CacheProxy, instance_cache_key
-from ..models import Foo
+from ..models import Foo, ComplexNumber
 
 
-class ComplexNumber(models.Model):
-    def __init__(self):
-        self.pk = 100
-
-    def get_version(self, label=None):
-        return 1
-
-    def as_string(self, *args, **kwargs):
-        return '2+3i'
 
 
 class CacheProxyTestCase(TestCase):
