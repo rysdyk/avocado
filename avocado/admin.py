@@ -162,7 +162,7 @@ class DataFieldAdmin(PublishedAdmin):
 
         urlize = lambda x: u'<a href="{0}">{1}</a>'.format(reverse(
             reverse_name, args=[x.id]), x.name, namespace=site.name,
-            app_name=site.app_name)
+            app_name=site.name)
 
         return '<br>'.join(map(urlize, queryset)) or None
 
