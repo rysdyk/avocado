@@ -68,15 +68,14 @@ class DataFieldAdminForm(forms.ModelForm):
         app_name = self.cleaned_data.get('app_name')
         model_name = cleaned_data.get('model_name')
         field_name = cleaned_data.get('field_name')
-
-        model = models.get_model(app_name, model_name)
+        model = apps.get_model(app_name, model_name)
 
         if model is None:
             del cleaned_data['model_name']
             msg = u'The model "{0}" could not be found in the app "{1}"' \
                 .format(model_name, app_name)
             self._errors['model_name'] = self.error_class([msg])
-        elif not model._meta.get_field_by_name(field_name):
+        elif not model._meta.get_field(field_name):
             del cleaned_data['field_name']
             msg = u'The model "{0}" does not have a field named "{1}"' \
                 .format(model_name, field_name)
