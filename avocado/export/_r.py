@@ -1,7 +1,6 @@
 from zipfile import ZipFile
 from cStringIO import StringIO
 from string import punctuation
-from django.template import Context
 from django.template.loader import get_template
 from _base import BaseExporter
 from _csv import CSVExporter
@@ -95,12 +94,12 @@ class RExporter(BaseExporter):
         zip_file.writestr(data_filename, data_buff.getvalue())
 
         template = get_template(template_name)
-        context = Context({
+        context = {
             'data_filename': data_filename,
             'labels': labels,
             'factors': factors,
             'levels': levels,
-        })
+        }
 
         # Write script from template
         zip_file.writestr(script_filename, template.render(context))
