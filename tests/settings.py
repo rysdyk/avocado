@@ -32,7 +32,9 @@ if ENABLE_SQLITE == '1':
         'NAME': os.path.join(os.path.dirname(__file__), 'tests.db'),
         # Explicitly set the test name otherwise Django will use an in-memory
         # database.
-        'TEST_NAME': os.path.join(os.path.dirname(__file__), 'tests.db'),
+        'TEST': {
+            'NAME': os.path.join(os.path.dirname(__file__), 'tests.db'),
+        }
     }
 
 if ENABLE_POSTGRES == '1':
@@ -188,3 +190,14 @@ RQ_QUEUES = {
         'DB': 0,
     },
 }
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # 'DIRS': [''],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            # ... some options here ...
+        },
+    },
+]
