@@ -18,10 +18,7 @@ TEMP_DB_ALIAS_PREFIX = '_db:{0}'
 
 
 def ensure_connection(conn):
-    if django.VERSION < (1, 6):
-        conn.cursor()
-    else:
-        conn.ensure_connection()
+    conn.ensure_connection()
 
 
 def isolate_queryset(name, queryset):
