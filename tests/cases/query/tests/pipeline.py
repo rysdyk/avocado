@@ -9,7 +9,7 @@ class QueryProcessorTestCase(TestCase):
     fixtures = ['tests/fixtures/employee_data.json']
 
     def setUp(self):
-        management.call_command('avocado', 'init', 'tests', quiet=True)
+        management.call_command('avocado', 'init', 'tests', concepts=True, publish=True, quiet=True)
 
         # The init command creates concepts named after the fields
         # by default.

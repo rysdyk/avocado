@@ -227,7 +227,7 @@ class ResultRowTestCase(TransactionTestCase):
     fixtures = ['tests/fixtures/employee_data.json']
 
     def setUp(self):
-        management.call_command('avocado', 'init', 'tests', quiet=True)
+        management.call_command('avocado', 'init', 'tests', concepts=True, publish=True, quiet=True)
 
     def test_invalid_options(self):
         # Page numbers less than 1 should not be allowed.

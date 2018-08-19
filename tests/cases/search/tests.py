@@ -9,7 +9,7 @@ class SearchTest(TestCase):
     fixtures = ['tests/cases/search/fixtures/search.json']
 
     def setUp(self):
-        management.call_command('avocado', 'init', 'search', quiet=True)
+        management.call_command('avocado', 'init', 'search', concepts=True, publish=True, quiet=True)
 
         # Create categories for test purposes
         parent = DataCategory(name='Harvest', published=True)
@@ -29,7 +29,7 @@ class NoHaystackSearchTest(TestCase):
     fixtures = ['tests/cases/search/fixtures/search.json']
 
     def setUp(self):
-        management.call_command('avocado', 'init', 'search', quiet=True)
+        management.call_command('avocado', 'init', 'search', concepts=True, publish=True, quiet=True)
 
         # Create categories for test purposes.
         category = DataCategory(name='Avocado', published=True)

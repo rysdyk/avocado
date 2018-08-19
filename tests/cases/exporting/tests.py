@@ -36,7 +36,7 @@ class ExportTestCase(TestCase):
     fixtures = ['tests/fixtures/employee_data.json']
 
     def setUp(self):
-        management.call_command('avocado', 'init', 'tests', quiet=True)
+        management.call_command('avocado', 'init', 'tests', concepts=True, publish=True, quiet=True)
 
         field = DataField.objects.get(field_name='salary')
         concept = field.concepts.all()[0]
@@ -310,7 +310,7 @@ class ForceDistinctRegressionTestCase(TestCase):
     fixtures = ['tests/fixtures/employee_data.json']
 
     def setUp(self):
-        management.call_command('avocado', 'init', 'tests', quiet=True)
+        management.call_command('avocado', 'init', 'tests', concepts=True, publish=True, quiet=True)
 
         self.first_name = DataField.objects.get(field_name='first_name')\
             .concepts.all()[0]

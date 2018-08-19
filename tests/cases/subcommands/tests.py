@@ -60,7 +60,7 @@ class CommandsTestCase(TestCase):
                               'cache', 'tests', methods=['invalid_function'])
 
     def test_init(self):
-        management.call_command('avocado', 'init', 'tests', quiet=True)
+        management.call_command('avocado', 'init', 'tests', concepts=True, publish=True, quiet=True)
 
         fields = DataField.objects.filter(published=True)
         concepts = DataConcept.objects.filter(published=True)
@@ -70,7 +70,7 @@ class CommandsTestCase(TestCase):
 
     def test_init_categories(self):
         management.call_command('avocado', 'init', 'tests.employee',
-                                categories=True, quiet=True)
+                                concepts=True, publish=True, categories=True, quiet=True)
 
         self.assertTrue(DataCategory.objects.filter(name='Employee',
                                                     published=True).exists())
