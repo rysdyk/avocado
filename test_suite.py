@@ -28,6 +28,7 @@ for arg in sys.argv[1:]:
 
 if not apps:
     apps = [
+        'tests',
         'tests.cases.core.tests',
         'tests.cases.exporting.tests',
         'tests.cases.formatters.tests',
