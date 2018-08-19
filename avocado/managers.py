@@ -265,6 +265,7 @@ class DataConceptManager(PublishedManager, DataConceptSearchMixin):
             from avocado.models import DataConceptField
             concept.save()
             cfield = DataConceptField(field=field, concept=concept)
+            cfield.save()
             concept.concept_fields.add(cfield)
         return concept
 
