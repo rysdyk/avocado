@@ -6,7 +6,7 @@ try:
 except ImportError:
     from ordereddict import OrderedDict
 from collections import defaultdict, namedtuple
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 from django.template import defaultfilters as filters
 from avocado.core import loader
 
@@ -339,7 +339,7 @@ class Formatter(object):
         if value is None:
             return ''
 
-        return force_unicode(value, strings_only=False)
+        return force_text(value, strings_only=False)
 
     def to_boolean(self, value, field, context):
         # If value is native True or False value, return it

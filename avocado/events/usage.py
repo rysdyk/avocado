@@ -25,7 +25,7 @@ def _log(instance=None, model=None, **kwargs):
         logger.exception('Error logging usage')
 
 
-def log(event, async=True, **kwargs):
+def log(event, asynchr=True, **kwargs):
     """Log an event with an optional associated object.
 
     If `instance` is present, the generic `content_object` will be set. Other
@@ -50,7 +50,7 @@ def log(event, async=True, **kwargs):
     if 'timestamp' not in kwargs:
         kwargs['timestamp'] = datetime.now()
 
-    if async and not FORCE_SYNC_LOG:
+    if asynchr and not FORCE_SYNC_LOG:
         thread = Thread(target=_log, kwargs=kwargs)
         thread.start()
     else:

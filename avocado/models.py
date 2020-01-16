@@ -7,7 +7,7 @@ from django.db import models
 from django.db.models import Count
 from django.contrib.sites.models import Site
 from django.contrib.auth.models import User
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 from django.db.models import Q
 from django.db.models.fields import FieldDoesNotExist
 from django.db.models.signals import post_save, pre_delete
@@ -423,7 +423,7 @@ class DataField(BasePlural, PublishArchiveMixin):
         if value in labels:
             return labels[value]
 
-        return smart_unicode(value)
+        return smart_text(value)
 
     def _has_predefined_choices(self):
         """Returns true if the base field has pre-defined choices and no
@@ -454,10 +454,10 @@ class DataField(BasePlural, PublishArchiveMixin):
         "Returns a distinct list of labels."
         if self._has_predefined_choices():
             labels = list(zip(*self.field.choices))[1]
-            return tuple(smart_unicode(l) for l in labels)
+            return tuple(smart_text(l) for l in labels)
 
         return tuple(
-            smart_unicode(l) for l in self.labels_list(queryset=queryset))
+            smart_text(l) for l in self.labels_list(queryset=queryset))
 
     @cached_method(version='data_version')
     def codes(self, queryset=None):

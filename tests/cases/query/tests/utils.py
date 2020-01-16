@@ -8,7 +8,7 @@ from django.test import TransactionTestCase, RequestFactory
 from rq.job import JobStatus
 from rq.exceptions import NoSuchJobError
 
-from avocado.async import utils as async_utils
+from avocado.asynchr import utils as async_utils
 from avocado.models import DataContext, DataField, DataView
 from avocado.query import utils
 from tests.models import Employee
