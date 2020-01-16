@@ -4,7 +4,7 @@ from avocado.core import utils
 from modeltree.tree import trees
 from django.db.models.query import QuerySet
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 
 AND = 'AND'
 OR = 'OR'
@@ -264,7 +264,7 @@ def validate(attrs, **context):
                         if val in value_labels:
                             label = value_labels[val]
                         else:
-                            label = smart_unicode(val)
+                            label = smart_text(val)
 
                         cleaned.append({
                             'value': val,
@@ -282,7 +282,7 @@ def validate(attrs, **context):
                     if value in value_labels:
                         label = value_labels[value]
                     else:
-                        label = smart_unicode(value)
+                        label = smart_text(value)
 
                     cleaned = {
                         'value': value,
