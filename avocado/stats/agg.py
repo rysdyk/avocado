@@ -172,7 +172,7 @@ class Aggregator(object):
             if len(raw) == 1:
                 condition = clone.field_name, raw[0]
             else:
-                condition = u'{0}__in'.format(clone.field_name), raw
+                condition = '{0}__in'.format(clone.field_name), raw
             clone._filter.append(M(tree=clone.model, **dict([condition])))
 
         clone._filter.extend(args)
@@ -180,7 +180,7 @@ class Aggregator(object):
         # Separate out the conditions that apply to aggregations. The
         # non-aggregation conditions will always be applied before the
         # aggregation is applied.
-        for key, value in filters.iteritems():
+        for key, value in filters.items():
             if key.split(LOOKUP_SEP)[0] in clone._aggregates:
                 condition = Q(**dict([(key, value)]))
                 clone._having.append(condition)
@@ -207,7 +207,7 @@ class Aggregator(object):
             if len(raw) == 1:
                 condition = clone.field_name, raw[0]
             else:
-                condition = u'{0}__in'.format(clone.field_name), raw
+                condition = '{0}__in'.format(clone.field_name), raw
             clone._exclude.append(M(tree=clone.model, **dict([condition])))
 
         clone._exclude.extend(args)
@@ -215,7 +215,7 @@ class Aggregator(object):
         # Separate out the conditions that apply to aggregations. The
         # non-aggregation conditions will always be applied before the
         # aggregation is applied.
-        for key, value in filters.iteritems():
+        for key, value in filters.items():
             if key.split(LOOKUP_SEP)[0] in clone._aggregates:
                 condition = ~Q(**dict([(key, value)]))
                 clone._having.append(condition)

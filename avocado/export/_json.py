@@ -1,6 +1,6 @@
 import inspect
 from django.core.serializers.json import DjangoJSONEncoder
-from _base import BaseExporter
+from ._base import BaseExporter
 
 
 class JSONGeneratorEncoder(DjangoJSONEncoder):
@@ -28,7 +28,7 @@ class JSONExporter(BaseExporter):
 
         keys = [f['name'] for f in self.header]
 
-        data = [dict(zip(keys, values)) for values in iterable]
+        data = [dict(list(zip(keys, values))) for values in iterable]
 
         for chunk in encoder.iterencode(data):
             buff.write(chunk)

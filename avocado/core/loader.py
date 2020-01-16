@@ -25,7 +25,7 @@ class Registry(object):
     def __len__(self):
         return len(self._registry)
 
-    def __nonzero__(self):
+    def __bool__(self):
         return True
 
     def __contains__(self, key):
@@ -54,7 +54,7 @@ class Registry(object):
         if default:
             self.default = self._registry[name] = obj
         elif name in self._registry:
-            raise AlreadyRegistered(u'The object "{0}" is already '
+            raise AlreadyRegistered('The object "{0}" is already '
                                     'registered'.format(name))
         self._registry[name] = obj
 
@@ -77,7 +77,7 @@ class Registry(object):
         # No reliable way to check for registered class/instance, so
         # the first non-required argument is checked for. If this is
         # the case, shift the arguments
-        if isinstance(obj, (str, unicode)):
+        if isinstance(obj, str):
             default, name = name, obj
 
             def func(obj, name=name, default=default):
@@ -101,13 +101,13 @@ class Registry(object):
             name = name.__class__.__name__
 
         if name not in self._registry:
-            raise NotRegistered(u'No object "{0}" registered'.format(name))
+            raise NotRegistered('No object "{0}" registered'.format(name))
         self._registry.pop(name)
 
     @property
     def choices(self):
         "Returns a 2-tuple list of all registered class instance names."
-        return sorted((x, x) for x in self._registry.iterkeys())
+        return sorted((x, x) for x in self._registry.keys())
 
 
 def autodiscover(module_name):

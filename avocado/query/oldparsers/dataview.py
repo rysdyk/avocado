@@ -106,7 +106,7 @@ class Node(object):
             ids += list(zip(*ordering)[0])
 
         # Flatten the grouped fields
-        fields = [i for l in self._get_fields_for_concepts(ids).values()
+        fields = [i for l in list(self._get_fields_for_concepts(ids).values())
                   for i in l]
 
         model_fields = []
@@ -123,7 +123,7 @@ class Node(object):
 
         if ordering:
             tree = trees[self.tree]
-            ids, directions = zip(*ordering)
+            ids, directions = list(zip(*ordering))
             groups = self._get_fields_for_concepts(ids)
 
             for pk, direction in ordering:
@@ -170,14 +170,14 @@ class Node(object):
         ids = []
         ordering = self.ordering
         if ordering:
-            ids = zip(*ordering)[0]
+            ids = list(zip(*ordering))[0]
         return self._get_concepts(ids)
 
     def get_fields_for_order_by(self):
         ids = []
         ordering = self.ordering
         if ordering:
-            ids = zip(*ordering)[0]
+            ids = list(zip(*ordering))[0]
         return self._get_fields_for_concepts(ids)
 
 

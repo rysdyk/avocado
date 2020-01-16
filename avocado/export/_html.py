@@ -1,6 +1,6 @@
 from django.template import Context
 from django.template.loader import get_template
-from _base import BaseExporter
+from ._base import BaseExporter
 
 
 class HTMLExporter(BaseExporter):
@@ -15,7 +15,7 @@ class HTMLExporter(BaseExporter):
     def write(self, iterable, template, buff=None, *args, **kwargs):
         buff = self.get_file_obj(buff)
 
-        if isinstance(template, basestring):
+        if isinstance(template, str):
             template = get_template(template)
 
         context = Context({

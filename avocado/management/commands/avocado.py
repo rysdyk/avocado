@@ -23,38 +23,38 @@ class Command(BaseCommand):
     def print_subcommands(self, prog_name):
         usage = ['', 'Available subcommands:']
         for name in sorted(self.commands.keys()):
-            usage.append(u'  {0}'.format(name))
+            usage.append('  {0}'.format(name))
         return '\n'.join(usage)
 
     def usage(self, subcommand):
-        usage = u'%prog {0} subcommand [options] [args]'.format(subcommand)
+        usage = '%prog {0} subcommand [options] [args]'.format(subcommand)
         if self.help:
-            return u'{0}\n\n{1}'.format(usage, self.help)
+            return '{0}\n\n{1}'.format(usage, self.help)
         return usage
 
     def print_help(self, prog_name, subcommand):
         super(Command, self).print_help(prog_name, subcommand)
-        sys.stdout.write(u'{0}\n\n'.format(self.print_subcommands(prog_name)))
+        sys.stdout.write('{0}\n\n'.format(self.print_subcommands(prog_name)))
 
     def get_subcommand(self, name):
         try:
-            module = import_module(u'avocado.management.subcommands.{0}'
+            module = import_module('avocado.management.subcommands.{0}'
                                    .format(name))
             return module.Command()
         except KeyError:
-            raise CommandError(u'Unknown subcommand: avocado {0}'.format(name))
+            raise CommandError('Unknown subcommand: avocado {0}'.format(name))
 
     def run_from_argv(self, argv):
         """Set up any environment changes requested (e.g., Python path
         and Django settings), then run this command.
         """
         if len(argv) > 2 and not argv[2].startswith('-') and \
-                argv[2] in self.commands.keys():
+                argv[2] in list(self.commands.keys()):
             subcommand = self.commands[argv[2]]
             klass = self.get_subcommand(subcommand)
             parser = OptionParser(
                 prog=argv[0],
-                usage=klass.usage(u'{0} {1}'.format(argv[1], subcommand)),
+                usage=klass.usage('{0} {1}'.format(argv[1], subcommand)),
                 version=klass.get_version(), option_list=klass.option_list)
             options, args = parser.parse_args(argv[3:])
             args = [subcommand] + args
@@ -67,7 +67,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         args = options['subcommands']
-        if not args or args[0] not in self.commands.keys():
+        if not args or args[0] not in list(self.commands.keys()):
             return self.print_help('./manage.py', 'avocado')
         subcommand, args = args[0], args[1:]
 

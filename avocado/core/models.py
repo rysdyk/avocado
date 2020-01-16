@@ -42,7 +42,7 @@ class Base(models.Model):
         This is used for performing text indexing for model instances.
         """
         return {
-            'name': unicode(self),
+            'name': str(self),
             'description': self.description,
             'keywords': self.keywords,
         }
@@ -62,7 +62,7 @@ class BasePlural(Base):
     @property
     def descriptors(self):
         return {
-            'name': unicode(self),
+            'name': str(self),
             'name_plural': self.get_plural_name(),
             'description': self.description,
             'keywords': self.keywords,
@@ -72,7 +72,7 @@ class BasePlural(Base):
         if self.name_plural:
             return self.name_plural
 
-        name = unicode(self)
+        name = str(self)
 
         if not name.endswith('s'):
             return name + 's'
@@ -92,7 +92,7 @@ class PublishArchiveMixin(models.Model):
     """
     published = models.BooleanField(default=False)
 
-    archived = models.BooleanField(default=False, help_text=u'Note: archived '
+    archived = models.BooleanField(default=False, help_text='Note: archived '
                                    'takes precedence over being published')
 
     objects = PublishedManager()
@@ -103,6 +103,6 @@ class PublishArchiveMixin(models.Model):
     def save(self, *args, **kwargs):
         if self.archived and self.published:
             self.published = False
-            log.debug(u'{0} is published, but is being archived. It has '
+            log.debug('{0} is published, but is being archived. It has '
                       'been unpublished'.format(self))
         super(PublishArchiveMixin, self).save(*args, **kwargs)

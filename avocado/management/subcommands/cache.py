@@ -100,4 +100,4 @@ class Command(DataFieldCommand):
                                          self.errors, self.total))
                 sys.stdout.flush()
 
-        print('\nTook {0} s'.format(round(time.time() - t0, 2)))
+        print(('\nTook {0} s'.format(round(time.time() - t0, 2))))

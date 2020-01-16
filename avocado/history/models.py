@@ -44,7 +44,7 @@ class Revision(models.Model):
 
     def apply(self, instance, commit=True):
         "Applies this revision to an instance."
-        for key, value in self.data.items():
+        for key, value in list(self.data.items()):
             setattr(instance, key, deepcopy(value))
         if commit:
             instance.save()
@@ -64,7 +64,7 @@ class Revision(models.Model):
         previous = self.data or {}
 
         if not fields:
-            fields = previous.keys()
+            fields = list(previous.keys())
 
         current = get_object_data(instance, fields=fields)
 

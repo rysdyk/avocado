@@ -79,7 +79,7 @@ def get_heuristic_flags(field):
 
 def parse_field_key(key):
     "Returns a field lookup based on a variety of key types."
-    if isinstance(key, int) or isinstance(key, long):
+    if isinstance(key, int) or isinstance(key, int):
         return {'pk': key}
 
     keys = ('app_name', 'model_name', 'field_name')
@@ -87,18 +87,18 @@ def parse_field_key(key):
     if isinstance(key, models.Field):
         opts = key.model._meta
         toks = [opts.app_label, opts.module_name, key.name]
-    elif isinstance(key, basestring):
+    elif isinstance(key, str):
         toks = key.split('.')
     elif isinstance(key, (list, tuple)):
         toks = key
 
     offset = len(keys) - len(toks)
-    return dict(zip(keys[offset:], toks))
+    return dict(list(zip(keys[offset:], toks)))
 
 
 def generate_random_username(length=30, max_attempts=100):
-    for i in xrange(max_attempts):
-        username = ''.join(choice(USERNAME_CHARS) for i in xrange(length))
+    for i in range(max_attempts):
+        username = ''.join(choice(USERNAME_CHARS) for i in range(length))
         if not User.objects.filter(username=username).exists():
             return username
     raise ValueError('Maximum attempts made to generate username')

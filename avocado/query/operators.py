@@ -9,19 +9,17 @@ class BaseOperatorMetaclass(type):
         return new_cls
 
 
-class BaseOperator(object):
-    __metaclass__ = BaseOperatorMetaclass
-
+class BaseOperator(object, metaclass=BaseOperatorMetaclass):
     lookup = ''
     short_name = ''
     verbose_name = ''
     negated = False
 
     def __unicode__(self):
-        return u'{0} ({1})'.format(self.verbose_name, self.uid)
+        return '{0} ({1})'.format(self.verbose_name, self.uid)
 
     def __repr__(self):
-        return u'<Operator: "{0}" ({1})>'.format(self.verbose_name, self.uid)
+        return '<Operator: "{0}" ({1})>'.format(self.verbose_name, self.uid)
 
     @property
     def operator(self):
@@ -30,7 +28,7 @@ class BaseOperator(object):
         return self.lookup
 
     def coerce_to_unicode(self, value):
-        return unicode(value)
+        return str(value)
 
     def is_valid(self, value):
         raise NotImplemented('Use an Operator subclass')
@@ -46,13 +44,13 @@ class SimpleTypeOperator(BaseOperator):
 
     def text(self, value):
         value = self.coerce_to_unicode(value)
-        return u'{0} {1}'.format(self.verbose_name, value)
+        return '{0} {1}'.format(self.verbose_name, value)
 
 
 class StringOperator(SimpleTypeOperator):
     "Operator class for string-only lookups."
     def is_valid(self, value):
-        return isinstance(value, basestring)
+        return isinstance(value, str)
 
 
 class ContainerTypeOperator(BaseOperator):
@@ -64,7 +62,7 @@ class ContainerTypeOperator(BaseOperator):
         return hasattr(value, '__iter__')
 
     def text(self, value):
-        value = map(self.coerce_to_unicode, value)
+        value = list(map(self.coerce_to_unicode, value))
         length = len(value)
 
         if length == 1:
@@ -72,7 +70,7 @@ class ContainerTypeOperator(BaseOperator):
                 name = NotExact.verbose_name
             else:
                 name = Exact.verbose_name
-            return u'{0} {1}'.format(name, value[0])
+            return '{0} {1}'.format(name, value[0])
 
         last = value.pop()
         length -= 1
@@ -87,9 +85,9 @@ class ContainerTypeOperator(BaseOperator):
         # Add the leftover item count for the tail of the list
         tail = length - self.max_list_size
         if tail > 0:
-            text += u' ... ({0} more)'.format(tail)
+            text += ' ... ({0} more)'.format(tail)
 
-        return u'{0} {1} {2}'.format(text, self.join_string, last)
+        return '{0} {1} {2}'.format(text, self.join_string, last)
 
 
 class Null(BaseOperator):
@@ -102,7 +100,7 @@ class Null(BaseOperator):
 
     def text(self, value):
         "Do not return value"
-        return unicode(self.verbose_name if value else NotNull.verbose_name)
+        return str(self.verbose_name if value else NotNull.verbose_name)
 
 
 class NotNull(Null):
@@ -112,7 +110,7 @@ class NotNull(Null):
 
     def text(self, value):
         "Do not return value"
-        return unicode(self.verbose_name if value else Null.verbose_name)
+        return str(self.verbose_name if value else Null.verbose_name)
 
 
 class Exact(SimpleTypeOperator):
@@ -129,7 +127,7 @@ class NotExact(Exact):
     def text(self, value):
         # Easier to read 'is False', rather than 'is not True'
         if isinstance(value, bool):
-            return u'is {0}'.format(not value)
+            return 'is {0}'.format(not value)
         return super(NotExact, self).text(value)
 
 
@@ -240,8 +238,8 @@ class Range(ContainerTypeOperator):
         return super(Range, self).is_valid(value) and len(value) == 2
 
     def text(self, value):
-        value = map(self.coerce_to_unicode, value)
-        return u'{0} {1}'.format(self.verbose_name, ' and '.join(value))
+        value = list(map(self.coerce_to_unicode, value))
+        return '{0} {1}'.format(self.verbose_name, ' and '.join(value))
 
 
 class NotRange(Range):

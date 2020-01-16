@@ -39,7 +39,7 @@ class Translator(object):
         if isinstance(obj, dict):
             return obj[key]
         if hasattr(obj, '__iter__'):
-            return map(lambda x: self._parse_value(x, key), obj)
+            return [self._parse_value(x, key) for x in obj]
         return obj
 
     def _get_value(self, obj):
@@ -68,11 +68,11 @@ class Translator(object):
 
         # No operator is registered
         if operator is None:
-            raise ValidationError(u'"{0}" is not a valid operator'.format(uid))
+            raise ValidationError('"{0}" is not a valid operator'.format(uid))
 
         # Ensure the operator is allowed
         if operator.uid not in allowed_operators:
-            raise ValidationError(u'Operator "{0}" cannot be used for '
+            raise ValidationError('Operator "{0}" cannot be used for '
                                   'this translator'.format(operator))
 
         return operator
@@ -241,13 +241,13 @@ class Translator(object):
 
         _value = self._normalize_value(field, value)
         if not operator.is_valid(_value):
-            raise ValidationError(u'"{0}" is not valid for the operator '
+            raise ValidationError('"{0}" is not valid for the operator '
                                   '"{1}"'.format(value, operator))
 
         return operator, value
 
     def language(self, field, operator, value, **kwargs):
-        return u'{0} {1}'.format(field.name, operator.text(value))
+        return '{0} {1}'.format(field.name, operator.text(value))
 
     def translate(self, field, roperator, rvalue, tree, **kwargs):
         """Returns two types of queryset modifiers including:

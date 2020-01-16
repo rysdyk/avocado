@@ -91,7 +91,7 @@ class FormatterTestCase(TestCase):
         f = HtmlFormatter(self.concept, formats=['html'])
 
         output = f(self.values)
-        expected = u'<span>CEO</span><span>100000</span><span>True</span>'
+        expected = '<span>CEO</span><span>100000</span><span>True</span>'
 
         self.assertEqual(output[0], expected)
 

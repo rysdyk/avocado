@@ -26,12 +26,12 @@ class Command(DataFieldCommand):
         incr_version = options.get('incr_version')
 
         if not incr_version:
-            print 'Nothing to do.'
+            print('Nothing to do.')
             return
 
         # Increments each field's data version
         updated = fields.update(data_version=F('data_version') + 1)
 
-        print(u'{0} fields have been updated. Cached methods will '
+        print(('{0} fields have been updated. Cached methods will '
               'lazily refresh their cache the next time they are '
-              'accessed.'.format(updated))
+              'accessed.'.format(updated)))

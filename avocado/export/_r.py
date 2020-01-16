@@ -1,9 +1,9 @@
 from zipfile import ZipFile
-from cStringIO import StringIO
+from io import StringIO
 from string import punctuation
 from django.template.loader import get_template
-from _base import BaseExporter
-from _csv import CSVExporter
+from ._base import BaseExporter
+from ._csv import CSVExporter
 
 
 class RExporter(BaseExporter):
@@ -35,16 +35,16 @@ class RExporter(BaseExporter):
 
     def _code_values(self, var, coded_labels):
         "If the field can be coded return the r factor and level for it."
-        data_field = u'data${0}'.format(var)
+        data_field = 'data${0}'.format(var)
 
-        factor = u'{0}.factor = factor({0},levels=c('.format(data_field)
-        level = u'levels({0}.factor)=c('.format(data_field)
+        factor = '{0}.factor = factor({0},levels=c('.format(data_field)
+        level = 'levels({0}.factor)=c('.format(data_field)
 
         last = len(coded_labels) - 1
 
         for i, (code, label) in enumerate(coded_labels):
             factor += str(code)
-            level += u'"{0}"'.format(str(label))
+            level += '"{0}"'.format(str(label))
 
             # Do not apply on the final loop
             if i < last:
@@ -68,7 +68,7 @@ class RExporter(BaseExporter):
         for f in self.header:
             name = f['name']
 
-            labels.append(u'attr(data${0}, "label") = "{1}"'
+            labels.append('attr(data${0}, "label") = "{1}"'
                           .format(name, f['label']))
 
             coded_labels = f['field'].coded_labels()

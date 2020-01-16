@@ -6,22 +6,22 @@ __all__ = ('KmeansTestCase',)
 
 random_points_file = open(os.path.join(
     os.path.dirname(__file__), '../../../fixtures/random_points/points.txt'))
-random_points = [float(x.strip()) for x in random_points_file.xreadlines()]
+random_points = [float(x.strip()) for x in random_points_file]
 
 random_points_3d_file = open(os.path.join(
     os.path.dirname(__file__),
     '../../../fixtures/random_points_3d/points.txt'))
 random_points_3d = [[float(x) for x in l.strip().split(",")]
-                    for l in random_points_3d_file.xreadlines()]
+                    for l in random_points_3d_file]
 
 int_points_3d_file = open(os.path.join(
     os.path.dirname(__file__), '../../../fixtures/int_3d/points.txt'))
 int_points_3d = [[int(x) for x in l.strip().split(",")]
-                 for l in int_points_3d_file.xreadlines()]
+                 for l in int_points_3d_file]
 
 int_points_file = open(os.path.join(
     os.path.dirname(__file__), '../../../fixtures/int/points.txt'))
-int_points = [int(l.strip()) for l in int_points_file.xreadlines()]
+int_points = [int(l.strip()) for l in int_points_file]
 
 PLACES = 10
 EPSILON_10 = 1.e-10
@@ -83,7 +83,7 @@ class KmeansTestCase(TestCase):
         vq_file = open(os.path.join(
             os.path.dirname(__file__),
             '../../../fixtures/random_points/scipy_whiten_output.txt'))
-        vq_output = [float(x.strip()) for x in vq_file.xreadlines()]
+        vq_output = [float(x.strip()) for x in vq_file]
 
         our_normalize = kmeans.normalize(random_points)
 
@@ -93,7 +93,7 @@ class KmeansTestCase(TestCase):
             os.path.dirname(__file__),
             '../../../fixtures/random_points_3d/scipy_whiten_output.txt'))
         vq_output = [[float(x) for x in l.strip().split(",")]
-                     for l in vq_file.xreadlines()]
+                     for l in vq_file]
 
         our_normalize = kmeans.normalize(random_points_3d)
 
@@ -160,7 +160,7 @@ class KmeansTestCase(TestCase):
 
         s_code = []
         s_dist = []
-        for l in vq_file.xreadlines():
+        for l in vq_file:
             fields = l.split(",")
             if not l.startswith("#") and len(fields) == 2:
                 s_code.append(int(fields[0].strip()))
@@ -182,7 +182,7 @@ class KmeansTestCase(TestCase):
 
         s_code = []
         s_dist = []
-        for l in vq_file.xreadlines():
+        for l in vq_file:
             fields = l.split(",")
             if not l.startswith("#") and len(fields) == 2:
                 s_code.append(int(fields[0].strip()))
@@ -203,7 +203,7 @@ class KmeansTestCase(TestCase):
 
         s_code = []
         s_dist = []
-        for l in vq_file.xreadlines():
+        for l in vq_file:
             fields = l.split(",")
             if not l.startswith("#") and len(fields) == 2:
                 s_code.append(int(fields[0].strip()))

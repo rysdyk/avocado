@@ -1,7 +1,7 @@
 import inspect
 import hashlib
 import logging
-import cPickle as pickle
+import pickle as pickle
 from django.db.models.query import QuerySet
 from functools import wraps
 from avocado.conf import settings
@@ -44,7 +44,7 @@ def _prep_pickling(args, kwargs):
     _kwargs = {}
 
     if kwargs:
-        for k, v in kwargs.items():
+        for k, v in list(kwargs.items()):
             if v is not None:
                 _kwargs[k] = _pickling_value(v)
 
@@ -96,7 +96,7 @@ def instance_cache_key(instance, label=None, version=None, args=None,
         raise ValueError('model instances must have a primary key')
 
     # The version may be an attribute on the instance
-    if isinstance(version, basestring) and hasattr(instance, version):
+    if isinstance(version, str) and hasattr(instance, version):
         version = getattr(instance, version)
 
         # Bound method

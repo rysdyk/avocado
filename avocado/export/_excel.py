@@ -6,7 +6,7 @@ if not OPTIONAL_DEPS['openpyxl']:
                                'exporter.')
 
 from openpyxl import Workbook
-from _base import BaseExporter
+from ._base import BaseExporter
 
 
 class ExcelExporter(BaseExporter):

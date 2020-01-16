@@ -14,7 +14,7 @@ from avocado.core import backup
 METADATA_FIXTURE_SUFFIX = settings.METADATA_FIXTURE_SUFFIX
 METADATA_MIGRATION_SUFFIX = settings.METADATA_MIGRATION_SUFFIX
 
-METADATA_MIGRATION_TEMPLATE = u"""\
+METADATA_MIGRATION_TEMPLATE = """\
 # -*- coding: utf-8 -*-
 from south.v2 import DataMigration
 
@@ -78,14 +78,14 @@ class Command(BaseCommand):
 
         try:
             fixture_dir = backup.get_fixture_dir()
-        except ImproperlyConfigured, e:
+        except ImproperlyConfigured as e:
             raise CommandError(e.message)
 
         if not os.path.exists(fixture_dir):
             os.makedirs(fixture_dir)
-            log.info(u'Created fixture directory: {0}'.format(fixture_dir))
+            log.info('Created fixture directory: {0}'.format(fixture_dir))
         elif not os.path.isdir(fixture_dir):
-            raise CommandError(u'The metadata fixture directory {0}.. is not '
+            raise CommandError('The metadata fixture directory {0}.. is not '
                                'a directory.'.format(fixture_dir))
 
         # Only allow valid names
@@ -97,7 +97,7 @@ class Command(BaseCommand):
         backup.create_fixture(fixture_name, using=database)
 
         if verbosity > 1:
-            log.info(u'Created fixture {0}'.format(fixture_name))
+            log.info('Created fixture {0}'.format(fixture_name))
 
         # Get the last migration for avocado to insert it as a dependency
         avocado_migrations = migration.Migrations('avocado',
@@ -132,11 +132,11 @@ class Command(BaseCommand):
         with open(file_path, 'w') as fout:
             fout.write(file_contents)
 
-        log.info(u'Created migration {0}'.format(next_filename))
+        log.info('Created migration {0}'.format(next_filename))
 
         if not no_fake:
             # Clear and reload migrations..
-            [migrations.pop() for _ in xrange(len(migrations))]
+            [migrations.pop() for _ in range(len(migrations))]
             migrations._load_migrations_module(
                 migrations.application.migrations)
 

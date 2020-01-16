@@ -16,7 +16,7 @@ class Settings(object):
 
         # iterate over the user-defined settings and override the default
         # settings
-        for key, value in iter(settings_dict.items()):
+        for key, value in iter(list(settings_dict.items())):
             setattr(self, key, value)
 
     def __setattr__(self, key, value):
@@ -39,7 +39,7 @@ settings = LazySettings()
 @receiver(setting_changed)
 def test_setting_changed_handler(**kwargs):
     if kwargs['setting'] == 'AVOCADO':
-        for key, value in kwargs['value'].iteritems():
+        for key, value in kwargs['value'].items():
             setattr(settings._wrapped, key, value)
     elif kwargs['setting'].startswith('AVOCADO_'):
         key = kwargs['setting'][8:]
@@ -50,7 +50,7 @@ def test_setting_changed_handler(**kwargs):
 class Dependency(object):
     name = ''
 
-    def __nonzero__(self):
+    def __bool__(self):
         return self.installed and self.setup
 
     def __unicode__(self):
@@ -164,7 +164,7 @@ def dep_supported(lib):
 
 def raise_dep_error(lib):
     dep = OPTIONAL_DEPS[lib]
-    raise ImproperlyConfigured(u'{0} must be installed to use '
+    raise ImproperlyConfigured('{0} must be installed to use '
                                'this feature.\n\n{1}'.format(lib, dep.__doc__))
 
 

@@ -41,13 +41,13 @@ def do_avocado(parser, token):
     toks = token.split_contents()
 
     if len(toks) != 6:
-        raise template.TemplateSyntaxError(u'{0} tag requires 6 arguments'
+        raise template.TemplateSyntaxError('{0} tag requires 6 arguments'
                                            .format(toks[0]))
 
     tag_name, operation, model, key, _as, variable = toks
 
     if operation != 'load':
-        raise template.TemplateSyntaxError(u'{0} {1} is an invalid operation'
+        raise template.TemplateSyntaxError('{0} {1} is an invalid operation'
                                            .format(tag_name, operation))
 
     if model == 'field':
@@ -55,18 +55,18 @@ def do_avocado(parser, token):
     elif model == 'concept':
         model = DataConcept
     else:
-        raise template.TemplateSyntaxError(u'{0} ... {1} is not a valid model '
+        raise template.TemplateSyntaxError('{0} ... {1} is not a valid model '
                                            'type'.format(tag_name, model))
 
     if key.isdigit():
         key = int(key)
     else:
         if model is DataConcept:
-            raise template.TemplateSyntaxError(u'{0} ... concept only '
+            raise template.TemplateSyntaxError('{0} ... concept only '
                                                'supports primary keys.'
                                                .format(tag_name))
         if key[0] != key[1] and key[0] not in ('"', "'"):
-            raise template.TemplateSyntaxError(u'{0} ... {1} natural keys '
+            raise template.TemplateSyntaxError('{0} ... {1} natural keys '
                                                'must be quoted'
                                                .format(tag_name, key))
         key = key[1:-1]

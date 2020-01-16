@@ -211,7 +211,7 @@ class DataContextParserTestCase(TestCase):
         }, tree=Employee)
 
         self.assertEqual(
-            unicode(node.apply().values('id').query)
+            str(node.apply().values('id').query)
             .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id" FROM "tests_employee" '
             'INNER JOIN "tests_title" ON ("tests_employee"."title_id" = '
@@ -220,7 +220,7 @@ class DataContextParserTestCase(TestCase):
 
         self.assertEqual(node.language, {
             'operator': 'exact',
-            'language': u'Boss is True',
+            'language': 'Boss is True',
             'field': f.pk,
             'value': True
         })
@@ -240,7 +240,7 @@ class DataContextParserTestCase(TestCase):
         }, tree=Employee)
 
         self.assertEqual(
-            unicode(node.apply().values('id').query)
+            str(node.apply().values('id').query)
             .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id" FROM "tests_employee" '
             'INNER JOIN "tests_title" ON ("tests_employee"."title_id" = '
@@ -337,7 +337,7 @@ class DataViewParserTestCase(TestCase):
         }], tree=Employee)
 
         self.assertEqual(
-            unicode(node.apply().query)
+            str(node.apply().query)
             .replace(' ', '').replace('`', '"'),
             'SELECT "tests_employee"."id", "tests_employee"."first_name", '
             '"tests_employee"."last_name" FROM "tests_employee"'
@@ -350,7 +350,7 @@ class DataViewParserTestCase(TestCase):
         }], tree=Employee)
 
         self.assertEqual(
-            unicode(node.apply().query)
+            str(node.apply().query)
             .replace(' ', '').replace('`', '"'),
             'SELECT "tests_employee"."id" FROM "tests_employee" '
             'ORDER BY "tests_employee"."first_name" DESC, '
@@ -363,7 +363,7 @@ class DataViewParserTestCase(TestCase):
         }], tree=Employee)
 
         self.assertEqual(
-            unicode(node.apply(Employee.objects.distinct()).query)
+            str(node.apply(Employee.objects.distinct()).query)
             .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id", '
             '"tests_employee"."first_name", '
@@ -393,7 +393,7 @@ class DataViewParserTestCase(TestCase):
         }], tree=Employee)
 
         self.assertEqual(
-            unicode(node.apply(Employee.objects.distinct()).query)
+            str(node.apply(Employee.objects.distinct()).query)
             .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id", '
             '"tests_office"."location", "tests_title"."name" FROM '
@@ -529,7 +529,7 @@ class DataQueryParserTestCase(TestCase):
         }, tree=Employee)
 
         self.assertEqual(
-            unicode(node.apply().query)
+            str(node.apply().query)
             .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id", '
             '"tests_employee"."first_name", "tests_employee"."last_name" FROM '
@@ -547,7 +547,7 @@ class DataQueryParserTestCase(TestCase):
         }, tree=Employee)
 
         self.assertEqual(
-            unicode(node.apply().query)
+            str(node.apply().query)
             .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id", '
             '"tests_employee"."first_name", '
@@ -565,7 +565,7 @@ class DataQueryParserTestCase(TestCase):
         }, tree=Employee)
 
         self.assertEqual(
-            unicode(node.apply().values('id').query)
+            str(node.apply().values('id').query)
             .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id" FROM "tests_employee" '
             'INNER JOIN "tests_title" ON ("tests_employee"."title_id" = '
@@ -575,7 +575,7 @@ class DataQueryParserTestCase(TestCase):
         f = DataField.objects.get_by_natural_key('tests', 'title', 'boss')
         self.assertEqual(node.datacontext_node.language, {
             'operator': 'exact',
-            'language': u'Boss is True',
+            'language': 'Boss is True',
             'field': f.pk,
             'value': True
         })

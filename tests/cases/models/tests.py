@@ -128,7 +128,7 @@ class DataFieldSupplementaryTestCase(TestCase):
         self.assertEqual(list(self.f.coded_labels())[0], (0, 'Programmer'))
 
     def test_random(self):
-        values = self.f.values()
+        values = list(self.f.values())
         random_values = self.f.random(3)
 
         self.assertEqual(len(random_values), 3)
@@ -182,23 +182,23 @@ class DataFieldQuerysetTestCase(TestCase):
         values = self.first_name.values_list()
 
         for value in values:
-            self.assertTrue(value in [u'Eric', u'Erin', u'Erick', u'Aaron',
-                                      u'Zac', u'Mel'])
+            self.assertTrue(value in ['Eric', 'Erin', 'Erick', 'Aaron',
+                                      'Zac', 'Mel'])
 
         queryset = self.first_name.model.objects.filter(first_name='Zac')
         self.assertSequenceEqual(
-            self.first_name.values_list(queryset=queryset), [u'Zac'])
+            self.first_name.values_list(queryset=queryset), ['Zac'])
 
     def test_labels_list(self):
         labels = self.first_name.labels_list()
 
         for label in labels:
-            self.assertTrue(label in [u'Eric', u'Erin', u'Erick', u'Aaron',
-                                      u'Zac', u'Mel'])
+            self.assertTrue(label in ['Eric', 'Erin', 'Erick', 'Aaron',
+                                      'Zac', 'Mel'])
 
         queryset = self.first_name.model.objects.filter(first_name='Zac')
         self.assertSequenceEqual(
-            self.first_name.labels_list(queryset=queryset), [u'Zac'])
+            self.first_name.labels_list(queryset=queryset), ['Zac'])
 
     def test_codes_list(self):
         self.first_name.code_field_name = 'id'
@@ -217,13 +217,13 @@ class DataFieldQuerysetTestCase(TestCase):
         values = self.first_name.search('Eri')
 
         for value in values:
-            self.assertTrue(value in [u'Eric', u'Erin', u'Erick'])
+            self.assertTrue(value in ['Eric', 'Erin', 'Erick'])
 
         queryset = self.first_name.model.objects.filter(
             first_name__icontains='Eric')
         self.assertSequenceEqual(
             self.first_name.search('Eri', queryset=queryset),
-            [u'Eric', u'Erick'])
+            ['Eric', 'Erick'])
 
     def test_size(self):
         self.assertEqual(self.first_name.size(), 6)
@@ -233,26 +233,26 @@ class DataFieldQuerysetTestCase(TestCase):
         self.assertEqual(self.first_name.size(queryset=queryset), 3)
 
     def test_values(self):
-        values = self.first_name.values()
+        values = list(self.first_name.values())
 
         for value in values:
-            self.assertTrue(value in [u'Eric', u'Erin', u'Erick', u'Aaron',
-                                      u'Zac', u'Mel'])
+            self.assertTrue(value in ['Eric', 'Erin', 'Erick', 'Aaron',
+                                      'Zac', 'Mel'])
 
         queryset = self.first_name.model.objects.filter(first_name='Zac')
         self.assertSequenceEqual(
-            self.first_name.values(queryset=queryset), [u'Zac'])
+            self.first_name.values(queryset=queryset), ['Zac'])
 
     def test_labels(self):
         labels = self.first_name.labels()
 
         for label in labels:
-            self.assertTrue(label in [u'Eric', u'Erin', u'Erick', u'Aaron',
-                                      u'Zac', u'Mel'])
+            self.assertTrue(label in ['Eric', 'Erin', 'Erick', 'Aaron',
+                                      'Zac', 'Mel'])
 
         queryset = self.first_name.model.objects.filter(first_name='Zac')
         self.assertSequenceEqual(
-            self.first_name.labels(queryset=queryset), [u'Zac'])
+            self.first_name.labels(queryset=queryset), ['Zac'])
 
     def test_codes(self):
         self.first_name.code_field_name = 'id'
@@ -277,7 +277,7 @@ class DataFieldQuerysetTestCase(TestCase):
         queryset = self.first_name.model.objects.filter(first_name='Zac')
         self.assertSequenceEqual(
             list(self.first_name.value_labels(queryset=queryset)),
-            [(u'Zac', u'Zac')])
+            [('Zac', 'Zac')])
 
     def test_coded_labels(self):
         self.first_name.code_field_name = 'id'
@@ -624,7 +624,7 @@ class DataQueryTestCase(TestCase):
         query = DataQuery(attrs)
 
         self.assertEqual(
-            unicode(query.apply(tree=Employee).query)
+            str(query.apply(tree=Employee).query)
             .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id", '
             '"tests_office"."location" FROM '
@@ -637,7 +637,7 @@ class DataQueryTestCase(TestCase):
         query = DataQuery({'view': {'ordering': [(c.pk, 'desc')]}})
         queryset = Employee.objects.all().distinct()
         self.assertEqual(
-            unicode(query.apply(queryset=queryset).query)
+            str(query.apply(queryset=queryset).query)
             .replace(' ', '').replace('`', '"'),
             'SELECT DISTINCT "tests_employee"."id", '
             '"tests_office"."location" FROM '

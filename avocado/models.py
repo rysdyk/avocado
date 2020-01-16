@@ -151,7 +151,7 @@ class DataField(BasePlural, PublishArchiveMixin):
             app_name = field.model._meta.app_label
 
         # Dot-delimited string
-        elif isinstance(app_name, basestring) and '.' in app_name:
+        elif isinstance(app_name, str) and '.' in app_name:
             values = app_name.split('.')
             if len(values) != 3:
                 raise ValueError("The dot-delimited field format must "
@@ -188,13 +188,13 @@ class DataField(BasePlural, PublishArchiveMixin):
     def __unicode__(self):
         if self.name:
             return self.name
-        return u'{0} {1}'.format(self.model._meta.verbose_name,
+        return '{0} {1}'.format(self.model._meta.verbose_name,
                                  self.field.verbose_name).title()
 
     def __len__(self):
         return self.size()
 
-    def __nonzero__(self):
+    def __bool__(self):
         "Takes precedence over __len__, so it is always truthy."
         return True
 
@@ -404,7 +404,7 @@ class DataField(BasePlural, PublishArchiveMixin):
         "Rudimentary search for string-based values."
         if utils.get_simple_type(self.search_field) == 'string':
             field_name = self.search_field.name
-            filters = {u'{0}__icontains'.format(field_name): query}
+            filters = {'{0}__icontains'.format(field_name): query}
             return self.values_list(queryset=queryset).filter(**filters)
 
     def get_plural_unit(self):
@@ -453,7 +453,7 @@ class DataField(BasePlural, PublishArchiveMixin):
     def labels(self, queryset=None):
         "Returns a distinct list of labels."
         if self._has_predefined_choices():
-            labels = zip(*self.field.choices)[1]
+            labels = list(zip(*self.field.choices))[1]
             return tuple(smart_unicode(l) for l in labels)
 
         return tuple(
@@ -470,22 +470,22 @@ class DataField(BasePlural, PublishArchiveMixin):
 
     def value_labels(self, queryset=None):
         "Returns a distinct set of value/label pairs for this field."
-        return ChoicesDict(zip(
-            self.values(queryset=queryset), self.labels(queryset=queryset)))
+        return ChoicesDict(list(zip(
+            self.values(queryset=queryset), self.labels(queryset=queryset))))
 
     def coded_labels(self, queryset=None):
         "Returns a distinct set of code/label pairs for this field."
         codes = self.codes(queryset=queryset)
 
         if codes is not None:
-            return ChoicesDict(zip(codes, self.labels(queryset=queryset)))
+            return ChoicesDict(list(zip(codes, self.labels(queryset=queryset))))
 
     def coded_values(self, queryset=None):
         "Returns a distinct set of code/value pairs for this field."
         codes = self.codes(queryset=queryset)
 
         if codes is not None:
-            return ChoicesDict(zip(codes, self.values(queryset=queryset)))
+            return ChoicesDict(list(zip(codes, self.values(queryset=queryset))))
 
     # Alias since it's common parlance in Django
     choices = value_labels
@@ -687,7 +687,7 @@ class DataConceptField(models.Model):
         ordering = ('order', 'name')
 
     def __unicode__(self):
-        return self.name or unicode(self.field)
+        return self.name or str(self.field)
 
     def __bytes__(self):
         return self.__unicode__().encode('utf8')
@@ -748,7 +748,7 @@ class DataContext(Base):
         if self.name:
             toks.append(self.name)
         elif self.user_id:
-            toks.append(unicode(self.user))
+            toks.append(str(self.user))
         elif self.session_key:
             toks.append(self.session_key)
         elif self.pk:
@@ -766,7 +766,7 @@ class DataContext(Base):
         else:
             toks.append('rogue')
 
-        return u'{0} ({1})'.format(*toks)
+        return '{0} ({1})'.format(*toks)
 
     def clean(self):
         if self.template and self.default:
@@ -878,7 +878,7 @@ class DataView(Base):
         if self.name:
             toks.append(self.name)
         elif self.user_id:
-            toks.append(unicode(self.user))
+            toks.append(str(self.user))
         elif self.session_key:
             toks.append(self.session_key)
         elif self.pk:
@@ -896,7 +896,7 @@ class DataView(Base):
         else:
             toks.append('rogue')
 
-        return u'{0} ({1})'.format(*toks)
+        return '{0} ({1})'.format(*toks)
 
     @classmethod
     def validate(cls, attrs, **context):
@@ -1002,7 +1002,7 @@ class DataQuery(Base):
         if self.name:
             toks.append(self.name)
         elif self.user_id:
-            toks.append(unicode(self.user))
+            toks.append(str(self.user))
         elif self.session_key:
             toks.append(self.session_key)
         elif self.pk:
@@ -1020,7 +1020,7 @@ class DataQuery(Base):
         else:
             toks.append('rogue')
 
-        return u'{0} ({1})'.format(*toks)
+        return '{0} ({1})'.format(*toks)
 
     @property
     def context(self):

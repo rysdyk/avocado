@@ -59,7 +59,7 @@ class DataFieldAdminForm(forms.ModelForm):
         try:
             apps.get_app_config(app_name)
         except ImproperlyConfigured:
-            raise forms.ValidationError(u'The app "{0}" could not be found'
+            raise forms.ValidationError('The app "{0}" could not be found'
                                         .format(app_name))
         return app_name
 
@@ -72,12 +72,12 @@ class DataFieldAdminForm(forms.ModelForm):
 
         if model is None:
             del cleaned_data['model_name']
-            msg = u'The model "{0}" could not be found in the app "{1}"' \
+            msg = 'The model "{0}" could not be found in the app "{1}"' \
                 .format(model_name, app_name)
             self._errors['model_name'] = self.error_class([msg])
         elif not model._meta.get_field(field_name):
             del cleaned_data['field_name']
-            msg = u'The model "{0}" does not have a field named "{1}"' \
+            msg = 'The model "{0}" does not have a field named "{1}"' \
                 .format(model_name, field_name)
             self._errors['field_name'] = self.error_class([msg])
 
@@ -159,7 +159,7 @@ class DataFieldAdmin(PublishedAdmin):
         queryset = obj.concepts.only('id', 'name')
         reverse_name = '{0}:avocado_dataconcept_change'.format(site.name)
 
-        urlize = lambda x: u'<a href="{0}">{1}</a>'.format(reverse(
+        urlize = lambda x: '<a href="{0}">{1}</a>'.format(reverse(
             reverse_name, args=[x.id]), x.name, namespace=site.name,
             app_name=site.name)
 
@@ -184,7 +184,7 @@ class DataFieldAdmin(PublishedAdmin):
 
         max_length = DataConcept._meta.get_field_by_name('name')[0].max_length
         name = ', '.join([f.name for f in fields])[:max_length - 5] + '...'
-        concept = DataConcept(name=u'"{0}"'.format(name))
+        concept = DataConcept(name='"{0}"'.format(name))
         concept.save()
         for i, datafield in enumerate(queryset):
             DataConceptField(concept=concept, field=datafield, order=i).save()

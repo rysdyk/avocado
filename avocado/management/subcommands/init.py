@@ -74,7 +74,7 @@ class Command(BaseCommand):
             sys.stdout = open(os.devnull, 'w')
 
         if options.get('force'):
-            resp = raw_input('Forcing a init will update metadata for '
+            resp = input('Forcing a init will update metadata for '
                              'existing fields. Are you sure you want to do '
                              'this?\n This will overwrite any previous '
                              'changes made. Type "yes" to continue: ')
@@ -103,8 +103,8 @@ class Command(BaseCommand):
                 model = apps.get_model(app_name, model_name)
 
                 if model is None:
-                    print(u'Cannot find model "{0}", skipping...'
-                          .format(label))
+                    print(('Cannot find model "{0}", skipping...'
+                          .format(label)))
                     continue
 
                 # Specific field
@@ -112,8 +112,8 @@ class Command(BaseCommand):
                     try:
                         field = model._meta.get_field_by_name(field_name)[0]
                     except FieldDoesNotExist:
-                        print(u'Cannot find field "{0}", skipping...'
-                              .format(label))
+                        print(('Cannot find field "{0}", skipping...'
+                              .format(label)))
                         continue
                     pending_fields = [(field, model_name, app_name)]
 
@@ -123,7 +123,7 @@ class Command(BaseCommand):
             else:
                 app = apps.get_app_config(app_name)
                 if app is None:
-                    print(u'Cannot find app "{0}", skipping...'.format(label))
+                    print(('Cannot find app "{0}", skipping...'.format(label)))
                     continue
                 pending_models.extend(app.get_models())
 
@@ -144,14 +144,14 @@ class Command(BaseCommand):
                     updated += 1
 
             if added == 1:
-                print(u'1 field added for {0}'.format(label))
+                print(('1 field added for {0}'.format(label)))
             elif added > 1:
-                print(u'{0} fields added for {1}'.format(added, label))
+                print(('{0} fields added for {1}'.format(added, label)))
 
             if updated == 1:
-                print(u'1 field updated for {0}'.format(label))
+                print(('1 field updated for {0}'.format(label)))
             elif updated > 1:
-                print(u'{0} fields updated for {1}'.format(updated, label))
+                print(('{0} fields updated for {1}'.format(updated, label)))
 
         if options.get('quiet'):
             sys.stdout = self.stdout
@@ -171,15 +171,15 @@ class Command(BaseCommand):
 
         # Check for primary key, and foreign key fields
         if isinstance(field, self.key_field_types) and not include_keys:
-            print(u'({0}) {1}.{2} is a primary or foreign key. Skipping...'
-                  .format(app_name, model_name, field.name))
+            print(('({0}) {1}.{2} is a primary or foreign key. Skipping...'
+                  .format(app_name, model_name, field.name)))
             return
 
         # Ignore non-editable fields since in most cases they are for
         # managment purposes
         if not field.editable and not include_non_editable:
-            print(u'({0}) {1}.{2} is not editable. Skipping...'
-                  .format(app_name, model_name, field.name))
+            print(('({0}) {1}.{2} is not editable. Skipping...'
+                  .format(app_name, model_name, field.name)))
             return
 
         # All but the field name is case-insensitive, do initial lookup
@@ -206,18 +206,18 @@ class Command(BaseCommand):
         if f.pk:
             created = False
             if not force:
-                print(u'({0}) {1}.{2} already exists. Skipping...'
-                      .format(app_name, model_name, field.name))
+                print(('({0}) {1}.{2} already exists. Skipping...'
+                      .format(app_name, model_name, field.name)))
                 return
             # Only overwrite if the source value is not falsy
-            f.__dict__.update([(k, v) for k, v in kwargs.items()])
+            f.__dict__.update([(k, v) for k, v in list(kwargs.items())])
         else:
             created = True
 
         if not f.name:
             # Use the default unicode representation of the datafield
             if prepend_model_name:
-                f.name = unicode(f)
+                f.name = str(f)
             else:
                 f.name = field.verbose_name.title()
 

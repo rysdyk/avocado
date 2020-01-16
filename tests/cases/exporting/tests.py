@@ -351,12 +351,12 @@ class ForceDistinctRegressionTestCase(TestCase):
         reader = exporter.manual_read(iterable)
 
         self.assertEqual(list(exporter.write(reader)), [
-            (1, u'Eric', u'Smith'),
-            (3, u'Erick', u'Smith'),
-            (5, u'Zac', u'Cook'),
-            (2, u'Erin', u'Jones'),
-            (4, u'Aaron', u'Harris'),
-            (6, u'Mel', u'Brooks'),
+            (1, 'Eric', 'Smith'),
+            (3, 'Erick', 'Smith'),
+            (5, 'Zac', 'Cook'),
+            (2, 'Erin', 'Jones'),
+            (4, 'Aaron', 'Harris'),
+            (6, 'Mel', 'Brooks'),
         ])
 
     def test_sort_related(self):
@@ -375,10 +375,10 @@ class ForceDistinctRegressionTestCase(TestCase):
         reader = exporter.manual_read(iterable)
 
         self.assertEqual(list(exporter.write(reader)), [
-            (3, u'Erick', u'Smith'),
-            (4, u'Aaron', u'Harris'),
-            (5, u'Zac', u'Cook'),
-            (6, u'Mel', u'Brooks'),
-            (1, u'Eric', u'Smith'),
-            (2, u'Erin', u'Jones')
+            (3, 'Erick', 'Smith'),
+            (4, 'Aaron', 'Harris'),
+            (5, 'Zac', 'Cook'),
+            (6, 'Mel', 'Brooks'),
+            (1, 'Eric', 'Smith'),
+            (2, 'Erin', 'Jones')
         ])

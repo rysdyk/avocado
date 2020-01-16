@@ -174,7 +174,7 @@ class Branch(Node):
         for node in self.children:
             if not node.extra:
                 continue
-            for key, value in node.extra.items():
+            for key, value in list(node.extra.items()):
                 _type = type(value)
                 # Initialize an empty container for the value type..
                 extra.setdefault(key, _type())
@@ -227,7 +227,7 @@ def validate(attrs, **context):
             attrs['language'] = cxt.name
         except DataContext.DoesNotExist:
             enabled = False
-            errors.append(u'DataContext "{0}" does not exist.'
+            errors.append('DataContext "{0}" does not exist.'
                           .format(attrs['id']))
 
     elif is_condition(attrs):
@@ -300,7 +300,7 @@ def validate(attrs, **context):
         if attrs['type'] not in LOGICAL_OPERATORS:
             enabled = False
         else:
-            map(lambda x: validate(x, **context), attrs['children'])
+            list(map(lambda x: validate(x, **context), attrs['children']))
     else:
         enabled = False
         errors.append('Unknown node type')
@@ -335,5 +335,5 @@ def parse(attrs, **context):
                          **context)
     else:
         node = Branch(type=attrs['type'], **context)
-        node.children = map(lambda x: parse(x, **context), attrs['children'])
+        node.children = [parse(x, **context) for x in attrs['children']]
     return node

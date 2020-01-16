@@ -45,12 +45,12 @@ def next_fixture_name(name, dirname):
     if not filenames:
         version = '0001'
     else:
-        version = unicode(int(filenames[-1][:4]) + 1).zfill(4)
-    return u'{0}_{1}'.format(version, name)
+        version = str(int(filenames[-1][:4]) + 1).zfill(4)
+    return '{0}_{1}'.format(version, name)
 
 
 def full_fixture_path(name):
-    return u'{0}.{1}'.format(os.path.join(get_fixture_dir(), name),
+    return '{0}.{1}'.format(os.path.join(get_fixture_dir(), name),
                              FIXTURE_FORMAT)
 
 
@@ -75,7 +75,7 @@ def create_fixture(name, using=DEFAULT_DB_ALIAS, silent=False):
         management.call_command('dumpdata', *MIGRATION_MODEL_LABELS,
                                 database=using, stdout=fout)
     if not silent:
-        log.info(u'Created fixture {0}'.format(name))
+        log.info('Created fixture {0}'.format(name))
 
 
 def create_temp_fixture(*args, **kwargs):
@@ -108,12 +108,12 @@ def load_fixture(name, using=DEFAULT_DB_ALIAS):
                         router.allow_syncdb(using, obj.object.__class__)
                     ):
                         obj.save(using=using)
-        except (DatabaseError, IntegrityError), e:
-            msg = u'Could not load {0}.{1}(pk={2}): {3}'.format(
+        except (DatabaseError, IntegrityError) as e:
+            msg = 'Could not load {0}.{1}(pk={2}): {3}'.format(
                 obj.object._meta.app_label,
                 obj.object._meta.object_name, obj.object.pk, e)
-            raise e.__class__, e.__class__(msg), sys.exc_info()[2]
-    log.info(u'Loaded data from fixture {0}'.format(name))
+            raise e.__class__(e.__class__(msg)).with_traceback(sys.exc_info()[2])
+    log.info('Loaded data from fixture {0}'.format(name))
 
 
 def delete_metadata(using=DEFAULT_DB_ALIAS):
@@ -122,7 +122,7 @@ def delete_metadata(using=DEFAULT_DB_ALIAS):
     DataConcept.objects.using(using).delete()
     DataField.objects.using(using).delete()
     DataCategory.objects.using(using).delete()
-    log.debug(u'Metadata deleted from database "{0}"'.format(using))
+    log.debug('Metadata deleted from database "{0}"'.format(using))
 
 
 def safe_load(name, backup_path=None, using=DEFAULT_DB_ALIAS):
@@ -140,12 +140,12 @@ def safe_load(name, backup_path=None, using=DEFAULT_DB_ALIAS):
                                silent=True)
             else:
                 backup_path = create_temp_fixture(using=using, silent=True)
-            log.info(u'Backup fixture written to {0}'.format(os.path.abspath(
+            log.info('Backup fixture written to {0}'.format(os.path.abspath(
                 backup_path)))
             delete_metadata(using=using)
             load_fixture(name, using=using)
     except (DatabaseError, IntegrityError):
-        log.error(u'Fixture load failed, reverting from backup: {0}'
+        log.error('Fixture load failed, reverting from backup: {0}'
                   .format(backup_path))
         load_fixture(os.path.abspath(backup_path), using=using)
         raise

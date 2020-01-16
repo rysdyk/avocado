@@ -241,7 +241,7 @@ class DataFieldManager(PublishedManager, DataFieldSearchMixin):
             values = app_name.split('.')
         else:
             values = [app_name, model_name, field_name]
-        return queryset.get(**dict(zip(keys, values)))
+        return queryset.get(**dict(list(zip(keys, values))))
 
 
 class DataConceptManager(PublishedManager, DataConceptSearchMixin):
@@ -256,7 +256,7 @@ class DataConceptManager(PublishedManager, DataConceptSearchMixin):
         object. The DataConcept can also be optionally saved by setting the
         `save` flag.
         """
-        for key, value, in field.descriptors.iteritems():
+        for key, value, in field.descriptors.items():
             kwargs.setdefault(key, value)
 
         concept = self.model(**kwargs)

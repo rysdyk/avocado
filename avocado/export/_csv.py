@@ -1,5 +1,5 @@
 import csv
-from _base import BaseExporter
+from ._base import BaseExporter
 
 
 class UnicodeWriter(object):

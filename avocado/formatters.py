@@ -28,10 +28,10 @@ def _unique_dict(fields):
     based on the field's natural key.
     """
     def model_prefix(field, key):
-        return u'{0}__{1}'.format(field.model_name, key)
+        return '{0}__{1}'.format(field.model_name, key)
 
     def app_prefix(field, key):
-        return u'{0}__{1}'.format(field.app_name, model_prefix(field, key))
+        return '{0}__{1}'.format(field.app_name, model_prefix(field, key))
 
     # Evaluate in case this is QuerySet..
     fields = list(fields)
@@ -92,7 +92,7 @@ class Formatter(object):
     implemented if a custom set of values are being emitted by a format
     method.
     """
-    html_delimiter = u' '
+    html_delimiter = ' '
 
     html_map = {
         None: '<em>n/a</em>'
@@ -112,7 +112,7 @@ class Formatter(object):
 
             self.fields = _unique_dict(cf.field
                                        for cf in self.concept_fields)
-            self.field_names = self.fields.keys()
+            self.field_names = list(self.fields.keys())
         else:
             self.concept_fields = ()
             self.fields = {}
@@ -281,7 +281,7 @@ class Formatter(object):
         """
         meta = {
             'concept': self.concept,
-            'fields': self.fields.values(),
+            'fields': list(self.fields.values()),
         }
 
         # Exporter specific method for building the header.
@@ -322,7 +322,7 @@ class Formatter(object):
             elif type(value) is float:
                 tok = filters.floatformat(value)
             else:
-                tok = unicode(value)
+                tok = str(value)
 
             toks.append(tok)
 
@@ -337,7 +337,7 @@ class Formatter(object):
         # types that are being passed into this, this may not be good
         # enough for certain datatypes or complext data structures
         if value is None:
-            return u''
+            return ''
 
         return force_unicode(value, strings_only=False)
 
@@ -355,9 +355,9 @@ class Formatter(object):
             return value
 
         if isinstance(value, Decimal):
-            return float(unicode(value))
+            return float(str(value))
 
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             if value.isdigit():
                 return int(value)
 

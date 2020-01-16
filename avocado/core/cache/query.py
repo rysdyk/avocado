@@ -19,7 +19,7 @@ class CacheQuerySet(QuerySet):
         pk_name = opts.pk.name
 
         # Look for `pk` and the actual name of the primary key field
-        for key in list(PK_LOOKUPS) + [pk_name, u'{0}__exact'.format(pk_name)]:
+        for key in list(PK_LOOKUPS) + [pk_name, '{0}__exact'.format(pk_name)]:
             if key in kwargs:
                 pk = kwargs[key]
                 break

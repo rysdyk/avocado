@@ -111,7 +111,7 @@ class ObjectRevisionTest(TestCase):
 
         Revision.objects.create_revision(c, fields=['name'])
 
-        for i in xrange(1, 100):
+        for i in range(1, 100):
             c.name = 'Test{0}'.format(i)
             c.save()
             Revision.objects.create_revision(c, fields=['name'])

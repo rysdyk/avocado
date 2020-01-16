@@ -57,7 +57,7 @@ class Command(BaseCommand):
             template = loader.get_template('avocado/check.html')
 
         if output != 'none':
-            print template.render(Context(context))
+            print(template.render(Context(context)))
 
         # Exit with non-zero code for any worthy problems
         if unknown_fields or unknown_models or not default_modeltree:

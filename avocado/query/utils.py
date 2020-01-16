@@ -333,7 +333,7 @@ def get_and_format_rows(sql, params, processor_name, context, view, tree,
     # down to the query.
     order_only = lambda f: not f.get('visible', True)
 
-    if filter(order_only, view_node.facets):
+    if list(filter(order_only, view_node.facets)):
         rows = exporter.manual_read(cur,
                                     offset=offset,
                                     limit=limit)
@@ -468,7 +468,7 @@ def get_result_rows(context, view, query_options, evaluate_rows=False,
     order_only = lambda f: not f.get('visible', True)
     view_node = view.parse()
 
-    if filter(order_only, view_node.facets):
+    if list(filter(order_only, view_node.facets)):
         iterable = processor.get_iterable(queryset=queryset)
         rows = exporter.manual_read(iterable,
                                     offset=offset,

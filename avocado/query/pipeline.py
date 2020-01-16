@@ -86,7 +86,7 @@ class QueryProcessors(object):
     def __len__(self):
         return len(self._processors)
 
-    def __nonzero__(self):
+    def __bool__(self):
         return True
 
     def _get(self, key):

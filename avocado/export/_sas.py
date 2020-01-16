@@ -1,9 +1,9 @@
 from zipfile import ZipFile
-from cStringIO import StringIO
+from io import StringIO
 from string import punctuation
 from django.template.loader import get_template
-from _base import BaseExporter
-from _csv import CSVExporter
+from ._base import BaseExporter
+from ._csv import CSVExporter
 
 
 class SASExporter(BaseExporter):
@@ -47,7 +47,7 @@ class SASExporter(BaseExporter):
 
         self.num_lg_names += 1
         sas_name = name[:20]
-        sas_name += u'_lg_{0}'.format(self.num_lg_names)
+        sas_name += '_lg_{0}'.format(self.num_lg_names)
 
         return sas_name
 
@@ -57,13 +57,13 @@ class SASExporter(BaseExporter):
         """
         # get the informat/format
         if field.simple_type == 'string':
-            informat = s_format = u'${0}.'.format(field.field.max_length)
+            informat = s_format = '${0}.'.format(field.field.max_length)
         else:
             s_format = self.sas_format_map[field.simple_type]
             informat = self.sas_informat_map[field.simple_type]
 
-        sas_informat = u'{0:<10}{1:>10}'.format(name, informat)
-        sas_format = u'{0:<10}{1:>10}'.format(name, s_format)
+        sas_informat = '{0:<10}{1:>10}'.format(name, informat)
+        sas_format = '{0:<10}{1:>10}'.format(name, s_format)
 
         return sas_format, sas_informat
 
@@ -71,15 +71,15 @@ class SASExporter(BaseExporter):
         """If field can be coded return the value dictionary
         and the format name for the dictionary
         """
-        value_format = u'{0} {0}_f.'.format(name)
-        value = u'{0}_f'.format(name)
+        value_format = '{0} {0}_f.'.format(name)
+        value = '{0}_f'.format(name)
 
         codes = []
 
         for i, (code, label) in enumerate(coded_labels):
-            codes.append(u'{0}="{1}"'.format(code, label))
+            codes.append('{0}="{1}"'.format(code, label))
 
-        values = u'{0} {1}'.format(value, '\t'.join(codes))
+        values = '{0} {1}'.format(value, '\t'.join(codes))
         return value_format, values
 
     def write(self, iterable, buff=None, template_name='export/script.sas',
@@ -107,7 +107,7 @@ class SASExporter(BaseExporter):
 
             # Add the field names to the input statement
             if f['type'] == 'string':
-                inputs.append(u'{0} $'.format(name))
+                inputs.append('{0} $'.format(name))
             else:
                 inputs.append(name)
 
@@ -121,7 +121,7 @@ class SASExporter(BaseExporter):
                 values.append(value)
 
             # Construct labels
-            labels.append(u'{0}="{1}"'.format(name, f['label']))
+            labels.append('{0}="{1}"'.format(name, f['label']))
 
         data_filename = 'data.csv'
         script_filename = 'script.sas'

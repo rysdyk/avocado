@@ -2,7 +2,7 @@ import functools
 from multiprocessing.pool import ThreadPool
 from avocado.models import DataView
 from avocado.formatters import FormatterMismatchError, registry as formatters
-from cStringIO import StringIO
+from io import StringIO
 
 
 class BaseExporter(object):
@@ -46,7 +46,7 @@ class BaseExporter(object):
         self._format_cache = {}
 
     def __repr__(self):
-        return u'<{0}: {1}/{2}>'.format(self.__class__.__name__,
+        return '<{0}: {1}/{2}>'.format(self.__class__.__name__,
                                         len(self.params), self.row_length)
 
     def add_formatter(self, formatter_class, concept=None, keys=None,
@@ -90,7 +90,7 @@ class BaseExporter(object):
         if name is None:
             return StringIO()
 
-        if isinstance(name, basestring):
+        if isinstance(name, str):
             return open(name, 'w+')
 
         return name

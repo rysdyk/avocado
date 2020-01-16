@@ -77,7 +77,7 @@ def divide_lists(lst_numer, lst_denom):
         A new list formed by dividing each element of 'lst_numer' by
         'lst_denom' according to the division process described above.
     """
-    indexes = range(len(lst_denom))
+    indexes = list(range(len(lst_denom)))
     return [[n[i] / float(lst_denom[i]) for i in indexes] for n in lst_numer]
 
 
@@ -130,7 +130,7 @@ def normalize(points):
 
     # Organize the points list as a list where each row is a list of values of
     # the same dimension.
-    dimensions = zip(*points)
+    dimensions = list(zip(*points))
 
     # Compute the standard deviation of each dimension.
     std = [std_dev(d) for d in dimensions]
@@ -312,7 +312,7 @@ def compute_clusters(points, centroids):
 
     d = get_dimension(points)
     n = len(points)
-    cluster_indexes = range(len(centroids))
+    cluster_indexes = list(range(len(centroids)))
 
     if d != get_dimension(centroids):
         raise ValueError('Points and centroids must have the same '
@@ -368,7 +368,7 @@ def dimension_mean(points):
 
     # Organize the points list as a list where each row is a list of values
     # of the same dimension.
-    dimensions = zip(*points)
+    dimensions = list(zip(*points))
 
     return [sum(d) / float(len(d)) for d in dimensions]
 
@@ -491,7 +491,7 @@ def find_outliers(points, outlier_threshold=3, normalized=True):
     # Organize the points list as a list where each row is a list of values of
     # the same dimension.
     if is_nested(points):
-        dimensions = zip(*points)
+        dimensions = list(zip(*points))
 
     # Compute the mid-point index and construct the centroid by taking the
     # midpoint of the sorted list in each dimension.
@@ -581,7 +581,7 @@ def kmeans_optm(points, k=None, outlier_threshold=3):
     else:
         # Organize the points list as a list where each row is a list of
         # valuesof the same dimension.
-        dimensions = zip(*points)
+        dimensions = list(zip(*points))
         std = [std_dev(dim) for dim in dimensions]
 
     norm_points = normalize(points)
@@ -591,7 +591,7 @@ def kmeans_optm(points, k=None, outlier_threshold=3):
     else:
         # Organize the normalized list as a list where each row is a list of
         # values of the same dimension.
-        norm_dimensions = zip(*norm_points)
+        norm_dimensions = list(zip(*norm_points))
 
         # Sort the points by dimension and then return the dimension based
         # list back to the original point form so the sorted list has n

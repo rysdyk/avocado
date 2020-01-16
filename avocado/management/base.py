@@ -11,6 +11,6 @@ class DataFieldCommand(BaseCommand):
     def handle(self, *labels, **kwargs):
         try:
             fields = get_fields_by_label(labels)
-        except Exception, e:
+        except Exception as e:
             raise CommandError(e.message)
         return self.handle_fields(fields, **kwargs)

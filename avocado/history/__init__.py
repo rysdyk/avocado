@@ -12,7 +12,7 @@ def register(model, fields=None, exclude=None):
     versioned on save and delete operations.
     """
     if model in registry:
-        raise AlreadyRegistered(u'The model {0} is already registered'.format(
+        raise AlreadyRegistered('The model {0} is already registered'.format(
             model.__name__))
 
     if not fields:
@@ -24,7 +24,7 @@ def register(model, fields=None, exclude=None):
     fields = tuple(set(fields) - set(exclude))
 
     if not fields:
-        raise ValueError(u'No fields defined for versioning.')
+        raise ValueError('No fields defined for versioning.')
 
     dispatch_uid = '{0}_revision'.format(model.__name__)
 
@@ -42,7 +42,7 @@ def register(model, fields=None, exclude=None):
 def unregister(model):
     "Unregisters a model from versioning."
     if model not in registry:
-        raise NotRegistered(u'The model {0} is not registered'.format(
+        raise NotRegistered('The model {0} is not registered'.format(
             model.__name__))
     cache = registry.pop(model)
     pre_delete.disconnect(sender=model, dispatch_uid=cache['dispatch_uid'])
