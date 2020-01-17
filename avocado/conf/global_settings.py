@@ -26,6 +26,7 @@ SIMPLE_TYPES = {
     'slug': 'string',
     'text': 'string',
     'url': 'string',
+    'manytomany': 'key',
 }
 
 # A mapping between the client-friendly datatypes and sensible operators

@@ -58,7 +58,7 @@ def _prep_pickling(args, kwargs):
 def cache_key_func(l):
     "Computes a hashed cache key from a list of values."
     raw = ':'.join([str(x) for x in l])
-    return hashlib.sha256(raw).hexdigest()
+    return hashlib.sha256(raw.encode('utf-8')).hexdigest()
 
 
 def cache_key(label, version=None, args=None, kwargs=None):

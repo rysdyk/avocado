@@ -445,7 +445,7 @@ class DataField(BasePlural, PublishArchiveMixin):
     def values(self, queryset=None):
         "Returns a distinct list of values."
         if self._has_predefined_choices():
-            return tuple(zip(*self.field.choices)[0])
+            return tuple(list(zip(*self.field.choices))[0])
 
         return tuple(self.values_list(queryset=queryset))
 
