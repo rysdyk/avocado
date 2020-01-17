@@ -131,7 +131,9 @@ class DataField(BasePlural, PublishArchiveMixin):
     objects = managers.DataFieldManager()
 
     def __str__(self):
-        return self.field_name
+        # DataField inherits from BasePlural which inherits from Base
+        # and name is defined in Base
+        return self.name
 
     class Meta(object):
         unique_together = ('app_name', 'model_name', 'field_name')
