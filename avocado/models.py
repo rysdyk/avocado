@@ -130,6 +130,9 @@ class DataField(BasePlural, PublishArchiveMixin):
 
     objects = managers.DataFieldManager()
 
+    def __str__(self):
+        return self.field_name
+
     class Meta(object):
         unique_together = ('app_name', 'model_name', 'field_name')
         ordering = ('category__order', 'category__name', 'order', 'name')
@@ -401,8 +404,15 @@ class DataField(BasePlural, PublishArchiveMixin):
         return queryset
 
     def search(self, query, queryset=None):
-        "Rudimentary search for string-based values."
-        if utils.get_simple_type(self.search_field) == 'string':
+        """
+        Rudimentary search for string-based values.
+
+        This is fixed from the original by added a check
+        for 'key'
+        """
+        
+        if utils.get_simple_type(self.search_field) == 'string' or \
+            utils.get_simple_type(self.search_field) == 'key':
             field_name = self.search_field.name
             filters = {'{0}__icontains'.format(field_name): query}
             return self.values_list(queryset=queryset).filter(**filters)
