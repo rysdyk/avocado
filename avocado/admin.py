@@ -2,7 +2,7 @@ from django import forms
 from django.apps import apps
 from django.db import transaction, models
 from django.contrib import admin
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.exceptions import ImproperlyConfigured
 from avocado.models import DataField, DataConcept, DataCategory, \
     DataConceptField, DataView, DataContext, DataQuery

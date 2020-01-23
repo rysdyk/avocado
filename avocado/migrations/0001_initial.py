@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('published', models.BooleanField(default=False)),
                 ('archived', models.BooleanField(default=False, help_text='Note: archived takes precedence over being published')),
                 ('order', models.FloatField(null=True, db_column='_order', blank=True)),
-                ('parent', models.ForeignKey(related_name='children', blank=True, to='avocado.DataCategory', help_text='Sub-categories are limited to one-level deep', null=True)),
+                ('parent', models.ForeignKey(related_name='children', blank=True, to='avocado.DataCategory', help_text='Sub-categories are limited to one-level deep', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('parent__order', 'parent__name', 'order', 'name'),
@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
                 ('queryable', models.BooleanField(default=True)),
                 ('sortable', models.BooleanField(default=True)),
                 ('indexable', models.BooleanField(default=True)),
-                ('category', models.ForeignKey(blank=True, to='avocado.DataCategory', null=True)),
+                ('category', models.ForeignKey(blank=True, to='avocado.DataCategory', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('category__order', 'category__name', 'order', 'name'),
@@ -72,7 +72,7 @@ class Migration(migrations.Migration):
                 ('order', models.FloatField(null=True, db_column='_order', blank=True)),
                 ('created', models.DateTimeField(auto_now_add=True)),
                 ('modified', models.DateTimeField(auto_now=True)),
-                ('concept', models.ForeignKey(related_name='concept_fields', to='avocado.DataConcept')),
+                ('concept', models.ForeignKey(related_name='concept_fields', to='avocado.DataConcept', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('order', 'name'),
@@ -93,8 +93,8 @@ class Migration(migrations.Migration):
                 ('default', models.BooleanField(default=False)),
                 ('session_key', models.CharField(max_length=40, null=True, blank=True)),
                 ('accessed', models.DateTimeField(default=datetime.datetime(2017, 1, 11, 22, 1, 1, 250639), editable=False)),
-                ('parent', models.ForeignKey(related_name='forks', blank=True, to='avocado.DataContext', null=True)),
-                ('user', models.ForeignKey(related_name='datacontext+', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('parent', models.ForeignKey(related_name='forks', blank=True, to='avocado.DataContext', null=True, on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(related_name='datacontext+', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'abstract': False,
@@ -127,7 +127,7 @@ class Migration(migrations.Migration):
                 ('translator', models.CharField(blank=True, max_length=100, null=True, choices=[('Default', 'Default')])),
                 ('data_version', models.IntegerField(default=1, help_text='The current version of the underlying data for this field as of the last modification/update.')),
                 ('order', models.FloatField(null=True, db_column='_order', blank=True)),
-                ('category', models.ForeignKey(blank=True, to='avocado.DataCategory', null=True)),
+                ('category', models.ForeignKey(blank=True, to='avocado.DataCategory', null=True, on_delete=models.CASCADE)),
                 ('sites', models.ManyToManyField(related_name='_datafield_sites_+', to='sites.Site', blank=True)),
             ],
             options={
@@ -152,9 +152,9 @@ class Migration(migrations.Migration):
                 ('public', models.BooleanField(default=False)),
                 ('context_json', jsonfield.fields.JSONField(default=dict, null=True, blank=True, validators=[avocado.query.oldparsers.datacontext.validate])),
                 ('view_json', jsonfield.fields.JSONField(default=dict, null=True, blank=True, validators=[avocado.query.oldparsers.dataview.validate])),
-                ('parent', models.ForeignKey(related_name='forks', blank=True, to='avocado.DataQuery', null=True)),
+                ('parent', models.ForeignKey(related_name='forks', blank=True, to='avocado.DataQuery', null=True, on_delete=models.CASCADE)),
                 ('shared_users', models.ManyToManyField(related_name='_dataquery_shared_users_+', to=settings.AUTH_USER_MODEL)),
-                ('user', models.ForeignKey(related_name='dataquery+', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('user', models.ForeignKey(related_name='dataquery+', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name_plural': 'data queries',
@@ -175,8 +175,8 @@ class Migration(migrations.Migration):
                 ('default', models.BooleanField(default=False)),
                 ('session_key', models.CharField(max_length=40, null=True, blank=True)),
                 ('accessed', models.DateTimeField(default=datetime.datetime(2017, 1, 11, 22, 1, 1, 252000), editable=False)),
-                ('parent', models.ForeignKey(related_name='forks', blank=True, to='avocado.DataView', null=True)),
-                ('user', models.ForeignKey(related_name='dataview+', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('parent', models.ForeignKey(related_name='forks', blank=True, to='avocado.DataView', null=True, on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(related_name='dataview+', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'abstract': False,
@@ -191,8 +191,8 @@ class Migration(migrations.Migration):
                 ('data', jsonfield.fields.JSONField(null=True, blank=True)),
                 ('session_key', models.CharField(max_length=40, null=True, blank=True)),
                 ('timestamp', models.DateTimeField(default=datetime.datetime.now)),
-                ('content_type', models.ForeignKey(blank=True, to='contenttypes.ContentType', null=True)),
-                ('user', models.ForeignKey(related_name='+', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('content_type', models.ForeignKey(blank=True, to='contenttypes.ContentType', null=True, on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(related_name='+', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)),
             ],
         ),
         migrations.CreateModel(
@@ -205,8 +205,8 @@ class Migration(migrations.Migration):
                 ('timestamp', models.DateTimeField(default=datetime.datetime.now, db_index=True)),
                 ('deleted', models.BooleanField(default=False)),
                 ('changes', jsonfield.fields.JSONField(null=True, blank=True)),
-                ('content_type', models.ForeignKey(to='contenttypes.ContentType')),
-                ('user', models.ForeignKey(related_name='revision', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('content_type', models.ForeignKey(to='contenttypes.ContentType', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(related_name='revision', blank=True, to=settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('-timestamp',),
@@ -216,7 +216,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='dataconceptfield',
             name='field',
-            field=models.ForeignKey(related_name='concept_fields', to='avocado.DataField'),
+            field=models.ForeignKey(related_name='concept_fields', to='avocado.DataField', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='dataconcept',

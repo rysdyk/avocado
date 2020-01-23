@@ -35,11 +35,15 @@ log = logging.getLogger(__name__)
 class DataCategory(Base, PublishArchiveMixin):
     "A high-level organization for data concepts."
     # A reference to a parent for hierarchical categories
-    parent = models.ForeignKey('self', null=True, blank=True,
-                               related_name='children',
-                               limit_choices_to={'parent__isnull': True},
-                               help_text='Sub-categories are limited to '
-                               'one-level deep')
+    parent = models.ForeignKey(
+        'self', 
+        null=True, 
+        blank=True,
+        related_name='children',
+        limit_choices_to={'parent__isnull': True},
+        help_text='Sub-categories are limited to '
+                   'one-level deep',
+        on_delete=models.CASCADE)
     order = models.FloatField(null=True, blank=True, db_column='_order')
 
     objects = managers.DataCategoryManager()
@@ -89,7 +93,11 @@ class DataField(BasePlural, PublishArchiveMixin):
     # for workflow reasons than for when the concept is published. Automated
     # prcesses may create concepts on the fly, but not know which category they
     # should be linked to initially.
-    category = models.ForeignKey(DataCategory, null=True, blank=True)
+    category = models.ForeignKey(
+        DataCategory, 
+        null=True, 
+        blank=True,
+        on_delete=models.CASCADE)
 
     # Set this field to true to make this field's values enumerable. This
     # should only be enabled for data that contains a discrete vocabulary, i.e.
@@ -629,7 +637,11 @@ class DataConcept(BasePlural, PublishArchiveMixin):
     # prcesses may create concepts on the fly, but not know which category they
     # should be linked to initially. the admin interface enforces choosing a
     # category when the concept is published
-    category = models.ForeignKey(DataCategory, null=True, blank=True)
+    category = models.ForeignKey(
+        DataCategory, 
+        null=True, 
+        blank=True,
+        on_delete=models.CASCADE)
 
     # The associated fields for this concept. fields can be
     # associated with multiple concepts, thus the M2M
@@ -685,8 +697,14 @@ class DataConcept(BasePlural, PublishArchiveMixin):
 
 class DataConceptField(models.Model):
     "Through model between DataConcept and DataField relationships."
-    field = models.ForeignKey(DataField, related_name='concept_fields')
-    concept = models.ForeignKey(DataConcept, related_name='concept_fields')
+    field = models.ForeignKey(
+        DataField, 
+        related_name='concept_fields',
+        on_delete=models.CASCADE)
+    concept = models.ForeignKey(
+        DataConcept, 
+        related_name='concept_fields',
+        on_delete=models.CASCADE)
 
     name = models.CharField(max_length=100, null=True, blank=True)
     name_plural = models.CharField(max_length=100, null=True, blank=True)
@@ -730,13 +748,21 @@ class DataContext(Base):
     default = models.BooleanField(default=False)
 
     # The parent this instance was derived from
-    parent = models.ForeignKey('self', null=True, blank=True,
-                               related_name='forks')
+    parent = models.ForeignKey(
+        'self', 
+        null=True, 
+        blank=True,
+        related_name='forks',
+        on_delete=models.CASCADE)
 
     # For authenticated users the `user` can be directly referenced,
     # otherwise the session key can be used.
-    user = models.ForeignKey(User, null=True, blank=True,
-                             related_name='datacontext+')
+    user = models.ForeignKey(
+        User, 
+        null=True, 
+        blank=True,
+        related_name='datacontext+',
+        on_delete=models.SET_NULL)
     session_key = models.CharField(max_length=40, null=True, blank=True)
 
     accessed = models.DateTimeField(default=datetime.now(), editable=False)
@@ -860,13 +886,21 @@ class DataView(Base):
     default = models.BooleanField(default=False)
 
     # The parent this instance was derived from
-    parent = models.ForeignKey('self', null=True, blank=True,
-                               related_name='forks')
+    parent = models.ForeignKey(
+        'self', 
+        null=True, 
+        blank=True,
+        related_name='forks',
+        on_delete=models.CASCADE)
 
     # For authenticated users the `user` can be directly referenced,
     # otherwise the session key can be used.
-    user = models.ForeignKey(User, null=True, blank=True,
-                             related_name='dataview+')
+    user = models.ForeignKey(
+        User, 
+        null=True, 
+        blank=True,
+        related_name='dataview+',
+        on_delete=models.CASCADE)
     session_key = models.CharField(max_length=40, null=True, blank=True)
 
     accessed = models.DateTimeField(default=datetime.now(), editable=False)
@@ -957,13 +991,21 @@ class DataQuery(Base):
     default = models.BooleanField(default=False)
 
     # The parent this instance was derived from
-    parent = models.ForeignKey('self', null=True, blank=True,
-                               related_name='forks')
+    parent = models.ForeignKey(
+        'self', 
+        null=True, 
+        blank=True,
+        related_name='forks',
+        on_delete=models.CASCADE)
 
     # For authenticated users the `user` can be directly referenced,
     # otherwise the session key can be used.
-    user = models.ForeignKey(User, null=True, blank=True,
-                             related_name='dataquery+')
+    user = models.ForeignKey(
+        User, 
+        null=True, 
+        blank=True,
+        related_name='dataquery+',
+        on_delete=models.CASCADE)
     session_key = models.CharField(max_length=40, null=True, blank=True)
 
     accessed = models.DateTimeField(default=datetime.now, editable=False)

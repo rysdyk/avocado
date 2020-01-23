@@ -11,7 +11,7 @@ from .utils import get_object_data
 
 class Revision(models.Model):
     # Generic foreign key to the object
-    content_type = models.ForeignKey(ContentType)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField(db_index=True)
     content_object = GenericForeignKey()
 
@@ -19,8 +19,12 @@ class Revision(models.Model):
     data = jsonfield.JSONField(null=True, blank=True)
 
     # The user that created the revision
-    user = models.ForeignKey(User, null=True, blank=True,
-                             related_name='avocado_revision')
+    user = models.ForeignKey(
+        User, 
+        null=True, 
+        blank=True,
+        related_name='avocado_revision',
+        on_delete=models.SET_NULL)
     session_key = models.CharField(max_length=40, null=True, blank=True)
 
     # The timestamp of the revision
