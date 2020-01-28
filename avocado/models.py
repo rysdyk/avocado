@@ -146,9 +146,9 @@ class DataField(BasePlural, PublishArchiveMixin):
     class Meta(object):
         unique_together = ('app_name', 'model_name', 'field_name')
         ordering = ('category__order', 'category__name', 'order', 'name')
-        permissions = (
-            ('view_datafield', 'Can view datafield'),
-        )
+        # permissions = (
+        #     ('view_datafield', 'Can view datafield'),
+        # )
 
     @classmethod
     def init(cls, app_name, model_name=None, field_name=None, **kwargs):
@@ -690,9 +690,9 @@ class DataConcept(BasePlural, PublishArchiveMixin):
     class Meta(object):
         app_label = 'avocado'
         ordering = ('category__order', 'category__name', 'order', 'name')
-        permissions = (
-            ('view_dataconcept', 'Can view dataconcept'),
-        )
+        # permissions = (
+        #     ('view_dataconcept', 'Can view dataconcept'),
+        # )
 
 
 class DataConceptField(models.Model):

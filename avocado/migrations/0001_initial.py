@@ -60,7 +60,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('category__order', 'category__name', 'order', 'name'),
-                'permissions': (('view_dataconcept', 'Can view dataconcept'),),
+                # 'permissions': (('view_dataconcept', 'Can view dataconcept'),),
             },
         ),
         migrations.CreateModel(
@@ -132,7 +132,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('category__order', 'category__name', 'order', 'name'),
-                'permissions': (('view_datafield', 'Can view datafield'),),
+                # 'permissions': (('view_datafield', 'Can view datafield'),),
             },
         ),
         migrations.CreateModel(
