@@ -26,7 +26,7 @@ class ExcelExporter(BaseExporter):
 
         wb = Workbook(optimized_write=True)
 
-        ws_data = wb.create_sheet()
+        ws_data = wb.active
         ws_data.title = 'Data'
 
         # Create the data worksheet

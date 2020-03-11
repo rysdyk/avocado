@@ -2,8 +2,10 @@ import functools
 from multiprocessing.pool import ThreadPool
 from avocado.models import DataView
 from avocado.formatters import FormatterMismatchError, registry as formatters
-from io import StringIO
-
+from io import (
+    BytesIO,
+    StringIO,
+)
 
 class BaseExporter(object):
     "Base class for all exporters"
@@ -88,7 +90,7 @@ class BaseExporter(object):
 
     def get_file_obj(self, name=None):
         if name is None:
-            return StringIO()
+            return BytesIO()
 
         if isinstance(name, str):
             return open(name, 'w+')
