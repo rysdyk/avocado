@@ -30,6 +30,9 @@ class Base(models.Model):
     class Meta(object):
         abstract = True
 
+    def __str__(self):
+        return self.name
+
     def __unicode__(self):
         return self.name
 

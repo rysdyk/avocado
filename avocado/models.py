@@ -716,6 +716,9 @@ class DataConceptField(models.Model):
     class Meta(object):
         ordering = ('order', 'name')
 
+    def __str__(self):
+        return self.name or str(self.field)
+
     def __unicode__(self):
         return self.name or str(self.field)
 
