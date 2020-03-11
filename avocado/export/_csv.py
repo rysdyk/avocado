@@ -16,9 +16,7 @@ class UnicodeWriter(object):
 
     def writerow(self, row):
         self.writer.writerow([
-            s.encode("utf-8")
-            if 'encode' in dir(s) else s
-            for s in row
+            s for s in row
         ])
 
     def writerows(self, rows):
