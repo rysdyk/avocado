@@ -38,7 +38,7 @@ class Translator(object):
         """
         if isinstance(obj, dict):
             return obj[key]
-        if hasattr(obj, '__iter__'):
+        if type(obj) != str and hasattr(obj, '__iter__'):
             return [self._parse_value(x, key) for x in obj]
         return obj
 
