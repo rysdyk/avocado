@@ -809,6 +809,33 @@ class DataContext(Base):
 
         return '{0} ({1})'.format(*toks)
 
+    def __str__(self):
+        toks = []
+
+        # Identifier
+        if self.name:
+            toks.append(self.name)
+        elif self.user_id:
+            toks.append(str(self.user))
+        elif self.session_key:
+            toks.append(self.session_key)
+        elif self.pk:
+            toks.append('#{0}'.format(self.pk))
+        else:
+            toks.append('unsaved')
+
+        # State
+        if self.default:
+            toks.append('default template')
+        elif self.template:
+            toks.append('template')
+        elif self.session:
+            toks.append('session')
+        else:
+            toks.append('rogue')
+
+        return '{0} ({1})'.format(*toks)
+
     def clean(self):
         if self.template and self.default:
             queryset = self.__class__.objects.filter(template=True,
@@ -921,6 +948,33 @@ class DataView(Base):
         super(DataView, self).__init__(*args, **kwargs)
 
     def __unicode__(self):
+        toks = []
+
+        # Identifier
+        if self.name:
+            toks.append(self.name)
+        elif self.user_id:
+            toks.append(str(self.user))
+        elif self.session_key:
+            toks.append(self.session_key)
+        elif self.pk:
+            toks.append('#{0}'.format(self.pk))
+        else:
+            toks.append('unsaved')
+
+        # State
+        if self.default:
+            toks.append('default template')
+        elif self.template:
+            toks.append('template')
+        elif self.session:
+            toks.append('session')
+        else:
+            toks.append('rogue')
+
+        return '{0} ({1})'.format(*toks)
+
+    def __str__(self):
         toks = []
 
         # Identifier

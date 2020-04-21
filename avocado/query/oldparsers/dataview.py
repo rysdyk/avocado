@@ -103,7 +103,7 @@ class Node(object):
         ordering = self.ordering
 
         if ordering and distinct:
-            ids += list(zip(*ordering)[0])
+            ids += list(zip(*ordering))[0]
 
         # Flatten the grouped fields
         fields = [i for l in list(self._get_fields_for_concepts(ids).values())
