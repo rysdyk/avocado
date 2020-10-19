@@ -24,7 +24,7 @@ class ExcelExporter(BaseExporter):
         # Reference the header
         header = self.header
 
-        wb = Workbook(optimized_write=True)
+        wb = Workbook(write_only=True)
 
         ws_data = wb.active
         ws_data.title = 'Data'
