@@ -11,10 +11,10 @@ from ._base import BaseExporter
 
 class ExcelExporter(BaseExporter):
     short_name = 'Excel'
-    long_name = 'Microsoft Excel 2007 Format'
+    long_name = 'Microsoft Excel XLSX Format'
 
     file_extension = 'xlsx'
-    content_type = 'application/vnd.ms-excel'
+    content_type = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 
     preferred_formats = ('excel', 'string')
 
@@ -26,7 +26,7 @@ class ExcelExporter(BaseExporter):
 
         wb = Workbook(write_only=True)
 
-        ws_data = wb.active
+        ws_data = wb.create_sheet()
         ws_data.title = 'Data'
 
         # Create the data worksheet
