@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 
 install_requires = [
-    'django>=2.2',
+    'django>=2.2,<3.0',
     'modeltree>=1.1.9',
     'South==1.0.2',
     'jsonfield==1.0.0',
